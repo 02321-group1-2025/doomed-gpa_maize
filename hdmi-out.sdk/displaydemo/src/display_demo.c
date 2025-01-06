@@ -114,6 +114,7 @@ void DemoInitialize()
 	/*
 	 * Initialize the Display controller and start it
 	 */
+
 	Status = DisplayInitialize(&dispCtrl, &vdma, DISP_VTC_ID, DYNCLK_BASEADDR, pFrames, DEMO_STRIDE);
 	if (Status != XST_SUCCESS)
 	{
@@ -132,6 +133,11 @@ void DemoInitialize()
 	return;
 }
 
+#define FRAME_PIXEL(x, y, stride) ((y) * (stride) + (x) * 4)
+#define FRAME_PIXEL_R(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride)]
+#define FRAME_PIXEL_B(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 1]
+#define FRAME_PIXEL_G(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
+#define FRAME_PIXEL_A(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 3]
 void DemoRun()
 {
 	int nextFrame = 0;
@@ -143,59 +149,118 @@ void DemoRun()
 		XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
 	}
 
-	while (userInput != 'q')
-	{
-		DemoPrintMenu();
+	u8 *frame = dispCtrl.framePtr[dispCtrl.curFrame];
 
-		/* Wait for data on UART */
-		while (!XUartPs_IsReceiveData(UART_BASEADDR))
-		{}
+	int iPixelAddr;
 
-		/* Store the first character in the UART receive FIFO and echo it */
-		if (XUartPs_IsReceiveData(UART_BASEADDR))
-		{
-			userInput = XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
-			xil_printf("%c", userInput);
+	int x0 = 0;
+	int y0 = 0;
+
+	int width = 5;
+	int height = 5;
+
+
+
+
+	//	for(int xcoi = 0; xcoi < (dispCtrl.vMode.width*4); xcoi+=4) {
+	//		iPixelAddr = xcoi;
+	//
+	//		for(int ycoi = 0; ycoi < dispCtrl.vMode.height; ycoi++) {
+	//			frame[iPixelAddr    ] = 0x00;
+	//			frame[iPixelAddr + 1] = 0xFF;
+	//			frame[iPixelAddr + 2] = 0x00;
+	//			frame[iPixelAddr + 3] = 0x55;
+	//			iPixelAddr += dispCtrl.stride;
+	//		}
+	//	}
+	for (;;) {
+
+		// Clear display every loop
+		for (int y = 0; y < dispCtrl.vMode.height; y++) {
+			for (int x = 0; x < dispCtrl.vMode.width; x++) {
+				FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0x00;
+				FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0x00;
+				FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0x00;
+			}
 		}
 
-		switch (userInput)
-		{
-		case '1':
-			DemoChangeRes();
-			break;
-		case '2':
-			nextFrame = dispCtrl.curFrame + 1;
-			if (nextFrame >= DISPLAY_NUM_FRAMES)
-			{
-				nextFrame = 0;
+		for (int y = y0; y < y0+height; y++) {
+			for (int x = x0; x < x0+width; x++) {
+				FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0xFF;
+				FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0xFF;
+				FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0xFF;
 			}
-			DisplayChangeFrame(&dispCtrl, nextFrame);
-			break;
-		case '3':
-			DemoPrintTest(pFrames[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE, DEMO_PATTERN_0);
-			break;
-		case '4':
-			DemoPrintTest(pFrames[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE, DEMO_PATTERN_1);
-			break;
-		case '5':
-			DemoInvertFrame(dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
-			break;
-		case '6':
-			nextFrame = dispCtrl.curFrame + 1;
-			if (nextFrame >= DISPLAY_NUM_FRAMES)
-			{
-				nextFrame = 0;
-			}
-			DemoInvertFrame(dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.framePtr[nextFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
-			DisplayChangeFrame(&dispCtrl, nextFrame);
-			break;
-		case 'q':
-			break;
-		default :
-			xil_printf("\n\rInvalid Selection");
-			TimerDelay(500000);
 		}
+
+		Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
+
+		x0 += 1;
+		y0 += 1;
+
+		x0 %= dispCtrl.vMode.width;
+		y0 %= dispCtrl.vMode.height;
+
+		TimerDelay(10000);
 	}
+
+//	while (userInput != 'q')
+//	{
+//		DemoPrintMenu();
+//
+//		/* Wait for data on UART */
+//		while (!XUartPs_IsReceiveData(UART_BASEADDR))
+//		{}
+//
+//		/* Store the first character in the UART receive FIFO and echo it */
+//		if (XUartPs_IsReceiveData(UART_BASEADDR))
+//		{
+//			userInput = XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
+//			xil_printf("%c", userInput);
+//		}
+//
+//		switch (userInput)
+//		{
+//		case '1':
+//			DemoChangeRes();
+//			break;
+//		case '2':
+//			nextFrame = dispCtrl.curFrame + 1;
+//			if (nextFrame >= DISPLAY_NUM_FRAMES)
+//			{
+//				nextFrame = 0;
+//			}
+//			DisplayChangeFrame(&dispCtrl, nextFrame);
+//			break;
+//		case '3':
+//			DemoPrintTest(pFrames[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE, DEMO_PATTERN_0);
+//			break;
+//		case '4':
+//			DemoPrintTest(pFrames[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE, DEMO_PATTERN_1);
+//			break;
+//		case '5':
+//		    DemoPrintTest(pFrames[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE, DEMO_PATTERN_2);
+//		    break;
+//		case '6': // Update existing case numbers
+//		    DemoInvertFrame(dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
+//		    break;
+//		case '7':
+//		    nextFrame = dispCtrl.curFrame + 1;
+//		    // ... rest of existing code
+//			nextFrame = dispCtrl.curFrame + 1;
+//			if (nextFrame >= DISPLAY_NUM_FRAMES)
+//			{
+//				nextFrame = 0;
+//			}
+//			DemoInvertFrame(dispCtrl.framePtr[dispCtrl.curFrame], dispCtrl.framePtr[nextFrame], dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
+//			DisplayChangeFrame(&dispCtrl, nextFrame);
+//			break;
+//		case 'q':
+//			break;
+//		default :
+//			xil_printf("\n\rInvalid Selection");
+//			TimerDelay(500000);
+//		}
+//	}
 
 	return;
 }
@@ -216,8 +281,10 @@ void DemoPrintMenu()
 	xil_printf("2 - Change Display Framebuffer Index\n\r");
 	xil_printf("3 - Print Blended Test Pattern to Display Framebuffer\n\r");
 	xil_printf("4 - Print Color Bar Test Pattern to Display Framebuffer\n\r");
-	xil_printf("5 - Invert Current Frame colors\n\r");
-	xil_printf("6 - Invert Current Frame colors seamlessly\n\r");
+	xil_printf("5 - Print Dual Color Bar Test Pattern to Display Framebuffer\n\r");
+	// Then update existing options to 6 and 7
+	xil_printf("6 - Invert Current Frame colors\n\r");
+	xil_printf("7 - Invert Current Frame colors seamlessly\n\r");
 	xil_printf("q - Quit\n\r");
 	xil_printf("\n\r");
 	xil_printf("\n\r");
@@ -487,6 +554,24 @@ void DemoPrintTest(u8 *frame, u32 width, u32 height, u32 stride, int pattern)
 		 */
 		Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
 		break;
+
+	case DEMO_PATTERN_2:
+	    for(xcoi = 0; xcoi < (width*4); xcoi+=4)
+	    {
+	        iPixelAddr = xcoi;
+	        for(ycoi = 0; ycoi < height; ycoi++)
+	        {
+	            frame[iPixelAddr] = 255;     // Red = FF
+	            frame[iPixelAddr + 1] = 00;  // Blue = FF
+	            frame[iPixelAddr + 2] = 255;  // Green = FF
+	            iPixelAddr += stride;
+	        }
+	    }
+	    Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
+	    break;
+
+		break;
+
 	default :
 		xil_printf("Error: invalid pattern passed to DemoPrintTest");
 	}
