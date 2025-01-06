@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2018.2 (64-bit)
+# SW Build 2258646 on Thu Jun 14 20:03:12 MDT 2018
+# IP Build 2256618 on Thu Jun 14 22:10:49 MDT 2018
+# Start of session at: Mon Jan  6 09:26:28 2025
+# Process ID: 13000
+# Current directory: C:/DTU/semester_3/hw_sw/3_uger/hdmi-out
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent16780 C:\DTU\semester_3\hw_sw\3_uger\hdmi-out\hdmi-out.xpr
+# Log file: C:/DTU/semester_3/hw_sw/3_uger/hdmi-out/vivado.log
+# Journal file: C:/DTU/semester_3/hw_sw/3_uger/hdmi-out\vivado.jou
+#-----------------------------------------------------------sstart_gui
+open_project C:/DTU/semester_3/hw_sw/3_uger/hdmi-out/hdmi-out.xpr
