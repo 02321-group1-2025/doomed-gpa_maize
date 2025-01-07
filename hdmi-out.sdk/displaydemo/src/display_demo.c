@@ -134,9 +134,9 @@ void DemoInitialize()
 }
 
 #define FRAME_PIXEL(x, y, stride) ((y) * (stride) + (x) * 4)
-#define FRAME_PIXEL_R(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride)]
-#define FRAME_PIXEL_B(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 1]
-#define FRAME_PIXEL_G(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
+#define FRAME_PIXEL_B(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride)]
+#define FRAME_PIXEL_G(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 1]
+#define FRAME_PIXEL_R(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
 #define FRAME_PIXEL_A(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 3]
 
 void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
@@ -167,63 +167,29 @@ void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 		}
 		return;
 	}
-	if(x0 > x1){//have x increasing
-		int temp = x0;
-		x0 = x1;
-		x1 = temp;
-		temp = y0;
-		y0 = y1;
-		y1 = temp;
-	}
-	if(x1 - x0 > y1 - y0){ //longer x
-		int swap = (x1 - x0) / (y1 - y0);
-		int repeat = 0;
-		u8 increase = y1 > y0 ? 1 : -1;
-		int y = y0;
-		for (int x = x0; x <= x1; x++){
-			if(repeat >= swap){
-				repeat = 0;
-				y += increase;
-			}
-			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
-		}
-	}
-	if(y0 > y1){//have y increasing
-		int temp = y0;
-		y0 = y1;
-		y1 = temp;
-		temp = x0;
-		x0 = x1;
-		x1 = temp;
-	}
-	if(y1 - y0 > x1 - x0){ //longer y
-		int swap = (y1 - y0) / (x1 - x0);
-		int repeat = 0;
-		u8 increase = x1 > x0 ? 1 : -1;
-		int x = x0;
-		for (int y = y0; y <= y1; y++){
-			if(repeat >= swap){
-				repeat = 0;
-				x += increase;
-			}
-			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
-		}
-	}
-	int x = x0;
-	int y = y0;
-	int increaseY = y1 > y0 ? 1 : -1;
-	int increaseX = x1 > x0 ? 1 : -1;
-	for (int t = 0; t <= x0 - x1; t++){
-		x += increaseX;
-		y += increaseY;
-		FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-		FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-		FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
-	}
+
+	//diagonals
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int yi = 1;
+    if (dy < 0){
+        yi = -1;
+        dy = -dy;
+    }
+    int D = (2 * dy) - dx;
+    int y = y0;
+
+    for (int x = x0; x <= x1; x++){
+    	FRAME_PIXEL_R(frame,x,y0,dispCtrl.stride) = red;
+		FRAME_PIXEL_G(frame,x,y0,dispCtrl.stride) = green;
+		FRAME_PIXEL_B(frame,x,y0,dispCtrl.stride) = blue;
+        if (D > 0){
+            y = y + yi;
+            D = D + (2 * (dy - dx));
+        }else{
+            D = D + 2*dy;
+        }
+    }
 }
 
 void DemoRun()
