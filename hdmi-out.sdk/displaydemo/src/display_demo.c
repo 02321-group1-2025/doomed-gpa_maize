@@ -138,10 +138,96 @@ void DemoInitialize()
 #define FRAME_PIXEL_B(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 1]
 #define FRAME_PIXEL_G(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
 #define FRAME_PIXEL_A(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 3]
+
+void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
+
+	if(x0 == x1){ //vertical linje
+		if(y0 > y1){
+				int temp = y0;
+				y0 = y1;
+				y1 = temp;
+		}
+		for (int y = y0; y <= y1; y++){
+			FRAME_PIXEL_R(frame,x0,y,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x0,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x0,y,dispCtrl.stride) = blue;
+		}
+		return;
+	}
+	if(y0 == y1){//horizontal linje
+		if(y0 > y1){
+			int temp = y0;
+			y0 = y1;
+			y1 = temp;
+		}
+		for (int x = x0; x <= x1; x++){
+			FRAME_PIXEL_R(frame,x,y0,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x,y0,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y0,dispCtrl.stride) = blue;
+		}
+		return;
+	}
+	if(x0 > x1){//have x increasing
+		int temp = x0;
+		x0 = x1;
+		x1 = temp;
+		temp = y0;
+		y0 = y1;
+		y1 = temp;
+	}
+	if(x1 - x0 > y1 - y0){ //longer x
+		int swap = (x1 - x0) / (y1 - y0);
+		int repeat = 0;
+		u8 increase = y1 > y0 ? 1 : -1;
+		int y = y0;
+		for (int x = x0; x <= x1; x++){
+			if(repeat >= swap){
+				repeat = 0;
+				y += increase;
+			}
+			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+		}
+	}
+	if(y0 > y1){//have y increasing
+		int temp = y0;
+		y0 = y1;
+		y1 = temp;
+		temp = x0;
+		x0 = x1;
+		x1 = temp;
+	}
+	if(y1 - y0 > x1 - x0){ //longer y
+		int swap = (y1 - y0) / (x1 - x0);
+		int repeat = 0;
+		u8 increase = x1 > x0 ? 1 : -1;
+		int x = x0;
+		for (int y = y0; y <= y1; y++){
+			if(repeat >= swap){
+				repeat = 0;
+				x += increase;
+			}
+			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+		}
+	}
+	int x = x0;
+	int y = y0;
+	int increaseY = y1 > y0 ? 1 : -1;
+	int increaseX = x1 > x0 ? 1 : -1;
+	for (int t = 0; t <= x0 - x1; t++){
+		x += increaseX;
+		y += increaseY;
+		FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+		FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+		FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+	}
+}
+
 void DemoRun()
 {
-	int nextFrame = 0;
-	char userInput = 0;
 
 	/* Flush UART FIFO */
 	while (XUartPs_IsReceiveData(UART_BASEADDR))
