@@ -139,7 +139,7 @@ void DemoInitialize()
 #define FRAME_PIXEL_R(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
 #define FRAME_PIXEL_A(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 3]
 
-void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
+void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 
 	if(x0 == x1){ //vertical linje
 		if(y0 > y1){
@@ -152,9 +152,7 @@ void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 			FRAME_PIXEL_G(frame,x0,y,dispCtrl.stride) = green;
 			FRAME_PIXEL_B(frame,x0,y,dispCtrl.stride) = blue;
 		}
-		return;
-	}
-	if(y0 == y1){//horizontal linje
+	}else if(y0 == y1){//horizontal linje
 		if(y0 > y1){
 			int temp = y0;
 			y0 = y1;
@@ -165,31 +163,102 @@ void line(u8* frame,u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 			FRAME_PIXEL_G(frame,x,y0,dispCtrl.stride) = green;
 			FRAME_PIXEL_B(frame,x,y0,dispCtrl.stride) = blue;
 		}
-		return;
+	}else if(abs(y1-y0) < abs(x1 -x0)){//low
+
+		if(x0 > x1){
+			int temp = x0;
+			x0 = x1;
+			x1 = temp;
+			temp = y0;
+			y0 = y1;
+			y1 = temp;
+		}
+
+		int dx = x1 - x0;
+		int dy = y1 - y0;
+		int yi = 1;
+		if (dy < 0){
+			yi = -1;
+			dy = -dy;
+		}
+		int D = (2 * dy) - dx;
+		int y = y0;
+
+		for (int x = x0; x <= x1; x++){
+			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+			if (D > 0){
+				y += yi;
+				D += (2 * (dy - dx));
+			}else{
+				D += 2*dy;
+			}
+		}
+	}else{//high
+
+		if(y0 > y1){
+			int temp = x0;
+			x0 = x1;
+			x1 = temp;
+			temp = y0;
+			y0 = y1;
+			y1 = temp;
+		}
+
+		int dx = x1 - x0;
+		int dy = y1 - y0;
+		int xi = 1;
+		if (dx < 0){
+			xi = -1;
+			dx = -dx;
+		}
+		int D = (2 * dx) - dy;
+		int x = x0;
+
+		for (int y = y0; y <= y1;y++){
+			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+			if (D > 0){
+				x += xi;
+				D += (2 * (dx - dy));
+			}else{
+				D += 2*dx;
+			}
+		}
 	}
+}
 
-	//diagonals
-    int dx = x1 - x0;
-    int dy = y1 - y0;
-    int yi = 1;
-    if (dy < 0){
-        yi = -1;
-        dy = -dy;
-    }
-    int D = (2 * dy) - dx;
-    int y = y0;
+void rect(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int width, int height, u8 fill){
+	if (fill){
+		for(int x = x0; x <= x0 + width; x++){
+			for (int y = y0; y < y0 + height; y++){
+				FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
+				FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
+				FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+			}
+		}
+	}else{
+		for(int x = x0; x <= x0 + width; x++){
+			FRAME_PIXEL_R(frame,x,y0         ,dispCtrl.stride) = red;//top
+			FRAME_PIXEL_G(frame,x,y0         ,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y0         ,dispCtrl.stride) = blue;
 
-    for (int x = x0; x <= x1; x++){
-    	FRAME_PIXEL_R(frame,x,y0,dispCtrl.stride) = red;
-		FRAME_PIXEL_G(frame,x,y0,dispCtrl.stride) = green;
-		FRAME_PIXEL_B(frame,x,y0,dispCtrl.stride) = blue;
-        if (D > 0){
-            y = y + yi;
-            D = D + (2 * (dy - dx));
-        }else{
-            D = D + 2*dy;
-        }
-    }
+			FRAME_PIXEL_R(frame,x,y0 + height,dispCtrl.stride) = red;//bottom
+			FRAME_PIXEL_G(frame,x,y0 + height,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x,y0 + height,dispCtrl.stride) = blue;
+		}
+		for(int y = y0; y <= y0 + width; y++){
+			FRAME_PIXEL_R(frame,x0,y        ,dispCtrl.stride) = red;//left
+			FRAME_PIXEL_G(frame,x0,y        ,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x0,y        ,dispCtrl.stride) = blue;
+
+			FRAME_PIXEL_R(frame,x0 + width,y,dispCtrl.stride) = red; //right
+			FRAME_PIXEL_G(frame,x0 + width,y,dispCtrl.stride) = green;
+			FRAME_PIXEL_B(frame,x0 + width,y,dispCtrl.stride) = blue;
+		}
+	}
 }
 
 void DemoRun()
@@ -203,54 +272,28 @@ void DemoRun()
 
 	u8 *frame = dispCtrl.framePtr[dispCtrl.curFrame];
 
-	int iPixelAddr;
+	// Clear display every loop
+			for (int y = 0; y < dispCtrl.vMode.height; y++) {
+				for (int x = 0; x < dispCtrl.vMode.width; x++) {
+					FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0x00;
+					FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0x00;
+					FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0x00;
+				}
+			}
 
-	int x0 = 0;
-	int y0 = 0;
-
-	int width = 5;
-	int height = 5;
-
-
-
-
-	//	for(int xcoi = 0; xcoi < (dispCtrl.vMode.width*4); xcoi+=4) {
-	//		iPixelAddr = xcoi;
-	//
-	//		for(int ycoi = 0; ycoi < dispCtrl.vMode.height; ycoi++) {
-	//			frame[iPixelAddr    ] = 0x00;
-	//			frame[iPixelAddr + 1] = 0xFF;
-	//			frame[iPixelAddr + 2] = 0x00;
-	//			frame[iPixelAddr + 3] = 0x55;
-	//			iPixelAddr += dispCtrl.stride;
-	//		}
-	//	}
 	for (;;) {
 
-		// Clear display every loop
-		for (int y = 0; y < dispCtrl.vMode.height; y++) {
-			for (int x = 0; x < dispCtrl.vMode.width; x++) {
-				FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0x00;
-				FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0x00;
-				FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0x00;
-			}
-		}
+		//   frame,r  ,g  ,b  ,x0 ,y0 ,x1 ,y1
+		line(frame,255,000,000,000,000,639,000);//top
+		line(frame,000,255,000,639,000,639,479);//rigth
+		line(frame,000,000,255,000,479,639,479);//bottom
+		line(frame,255,255,000,000,000,000,479);//left
+		line(frame,255,000,255,000,000,639,479);//diag down
+		line(frame,000,255,255,000,479,639,000);//diag up
 
-		for (int y = y0; y < y0+height; y++) {
-			for (int x = x0; x < x0+width; x++) {
-				FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0xFF;
-				FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0xFF;
-				FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0xFF;
-			}
-		}
-
+		rect(frame,255,255,255,000,000,200,200, 0);//non solid
+		rect(frame,255,255,255,062,062,100,100, 0);//solid
 		Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
-
-		x0 += 1;
-		y0 += 1;
-
-		x0 %= dispCtrl.vMode.width;
-		y0 %= dispCtrl.vMode.height;
 
 		TimerDelay(10000);
 	}
@@ -605,23 +648,6 @@ void DemoPrintTest(u8 *frame, u32 width, u32 height, u32 stride, int pattern)
 		 * actual memory, and therefore accessible by the VDMA.
 		 */
 		Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
-		break;
-
-	case DEMO_PATTERN_2:
-	    for(xcoi = 0; xcoi < (width*4); xcoi+=4)
-	    {
-	        iPixelAddr = xcoi;
-	        for(ycoi = 0; ycoi < height; ycoi++)
-	        {
-	            frame[iPixelAddr] = 255;     // Red = FF
-	            frame[iPixelAddr + 1] = 00;  // Blue = FF
-	            frame[iPixelAddr + 2] = 255;  // Green = FF
-	            iPixelAddr += stride;
-	        }
-	    }
-	    Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
-	    break;
-
 		break;
 
 	default :
