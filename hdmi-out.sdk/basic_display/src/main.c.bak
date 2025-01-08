@@ -1,0 +1,356 @@
+#include <stdint.h>
+
+#include "xil_printf.h"
+#include "xil_types.h"
+#include "xil_cache.h"
+#include "xparameters.h"
+#include "xaxivdma.h"
+#include "xvtc.h"
+#include "timer_ps/timer_ps.h"
+
+/* Defines */
+#define DEBUG
+#define xil_printf printf
+
+#define VDMA_ID XPAR_AXIVDMA_0_DEVICE_ID
+#define DISP_VTC_ID XPAR_VTC_0_DEVICE_ID
+#define DYNCLK_BASEADDR XPAR_AXI_DYNCLK_0_BASEADDR
+#define SCU_TIMER_ID XPAR_SCUTIMER_DEVICE_ID
+
+
+#define DISPLAY_WIDTH  640
+#define DISPLAY_HEIGHT 480
+#define BITS_PER_COLOR 8
+#define BITS_PER_PIXEL 32
+#define BYTES_PER_PIXEL 4
+
+#define MAX_FRAME (DISPLAY_WIDTH * DISPLAY_HEIGHT * BYTES_PER_PIXEL)
+
+#ifdef DEBUG
+   #include <stdio.h>
+   #define DEBUG_PRINT(fmt, args...) fprintf(stderr, "DEBUG: %s:%d:%s() - " fmt, __FILE__, __LINE__, __FUNCTION__, ##args)
+#elif defined DEBUG_SIMPLE
+   #include <stdio.h>
+   #define DEBUG_PRINT(fmt, args...) fprintf(stderr, fmt, ##args)
+#else
+   #define DEBUG_PRINT(fmt, args...) /* Don't do anything on release builds */
+#endif /* ifdef  DEBUG */
+
+/* Global variables */
+uint8_t frame[DISPLAY_WIDTH * DISPLAY_HEIGHT] __attribute__((aligned(0x20))); // 1D array
+uint8_t *frame_ptr = frame;
+
+XAxiVdma vdma;
+
+/* Display macros */
+#define DISP_STRIDE (640*4) // NB: Change if we do different resolution
+
+#define FRAME_PIXEL_INDEX(x, y) ((y) * (DISP_STRIDE) + (x) * 4)
+#define FRAME_PIXEL_B(frame, x, y) frame[FRAME_PIXEL_INDEX(x, y)    ]
+#define FRAME_PIXEL_G(frame, x, y) frame[FRAME_PIXEL_INDEX(x, y) + 1]
+#define FRAME_PIXEL_R(frame, x, y) frame[FRAME_PIXEL_INDEX(x, y) + 2]
+#define FRAME_PIXEL_A(frame, x, y) frame[FRAME_PIXEL_INDEX(x, y) + 3]
+
+/* Function prototypes
+ * TODO: Put into a separate header
+ */
+int display_initialize();
+int DisplayInitialize(XAxiVdma *vdma, u16 vtcId, u32 dynClkAddr, u8 *framePtr, u32 stride);
+int DisplayStart();
+
+int
+main() {
+	int status;
+
+	status = display_initialize();
+	if (status != XST_SUCCESS) {
+		DEBUG_PRINT("Unable to initialize display. Exiting now\r\n");
+		return XST_FAILURE;
+	}
+
+	// Variables for moving square
+	int x0 = 0;
+	int y0 = 0;
+	int width = 50;   // Size of square
+	int height = 50;
+
+	// Main loop
+	for (;;) {
+		// Clear screen (set to black)
+		for (int y = 0; y < DISPLAY_HEIGHT; y++) {
+			for (int x = 0; x < DISPLAY_WIDTH; x++) {
+				FRAME_PIXEL_R(frame, x, y) = 0x00;  // Red
+				FRAME_PIXEL_G(frame, x, y) = 0x00;  // Green
+				FRAME_PIXEL_B(frame, x, y) = 0x00;  // Blue
+				FRAME_PIXEL_A(frame, x, y) = 0xFF;  // Alpha (fully opaque)
+			}
+		}
+
+		// Draw white square
+		for (int y = y0; y < y0 + height && y < DISPLAY_HEIGHT; y++) {
+			for (int x = x0; x < x0 + width && x < DISPLAY_WIDTH; x++) {
+				FRAME_PIXEL_R(frame, x, y) = 0xFF;  // White
+				FRAME_PIXEL_G(frame, x, y) = 0xFF;
+				FRAME_PIXEL_B(frame, x, y) = 0xFF;
+				FRAME_PIXEL_A(frame, x, y) = 0xFF;
+			}
+		}
+
+		// Move square
+		x0 = (x0 + 1) % (DISPLAY_WIDTH - width);
+		y0 = (y0 + 1) % (DISPLAY_HEIGHT - height);
+
+		// Ensure memory writes are flushed to the framebuffer
+		Xil_DCacheFlushRange((unsigned int) frame, MAX_FRAME);
+
+		// Small delay
+		TimerDelay(10000);
+	}
+
+	return XST_SUCCESS;
+}
+
+int display_initialize() {
+	int status = XST_SUCCESS;
+
+	/* Initialize a timer used for a simple delay */
+	TimerInitialize(SCU_TIMER_ID);
+
+	/* Initialize VDMA driver */
+	XAxiVdma_Config *vdma_config = XAxiVdma_LookupConfig(VDMA_ID);
+	if (vdma_config == NULL) {
+		DEBUG_PRINT("No video DMA found for ID %d\r\n", VDMA_ID);
+		return 1;
+	}
+
+	status = XAxiVdma_CfgInitialize(&vdma, vdma_config, vdma_config->BaseAddress);
+	if (status != XST_SUCCESS) {
+		DEBUG_PRINT("VDMA Configuration Initialization failed %d\r\n", status);
+		return XST_FAILURE;
+	}
+
+	status = DisplayInitialize(
+				&vdma,
+				DISP_VTC_ID,
+				DYNCLK_BASEADDR,
+				frame,
+				DISP_STRIDE
+	);
+	if (status != XST_SUCCESS) {
+		DEBUG_PRINT("Something very fucky happened :(\r\n");
+	}
+
+	return status;
+}
+
+
+int DisplayInitialize(XAxiVdma *vdma, u16 vtcId, u32 dynClkAddr, u8 *framePtr, u32 stride)
+{
+    int status;
+    XVtc_Config *vtcConfig;
+    XVtc vtc;  /* Declare VTC instance */
+
+    /* Initialize the VTC driver */
+    vtcConfig = XVtc_LookupConfig(vtcId);
+    if (NULL == vtcConfig) {
+        DEBUG_PRINT("No VTC found for ID %d\r\n", vtcId);
+        return XST_FAILURE;
+    }
+
+    status = XVtc_CfgInitialize(&vtc, vtcConfig, vtcConfig->BaseAddress);
+    if (status != XST_SUCCESS) {
+        DEBUG_PRINT("VTC Initialization failed %d\r\n", status);
+        return XST_FAILURE;
+    }
+
+    /* Configure VTC timing for 640x480 @ 60Hz */
+    XVtc_Timing vtcTiming = {
+        .HActiveVideo = 640,    /* Active horizontal video */
+        .HFrontPorch = 16,      /* Horizontal front porch */
+        .HSyncWidth = 96,       /* Horizontal sync width */
+        .HBackPorch = 48,       /* Horizontal back porch */
+        .HSyncPolarity = 1,     /* Horizontal sync polarity (1 = negative) */
+
+        .VActiveVideo = 480,    /* Active vertical video */
+        .V0FrontPorch = 10,     /* Vertical front porch */
+        .V0SyncWidth = 2,       /* Vertical sync width */
+        .V0BackPorch = 33,      /* Vertical back porch */
+        .VSyncPolarity = 1,     /* Vertical sync polarity (1 = negative) */
+        .Interlaced = 0         /* Non-interlaced */
+    };
+
+    /* Configure VTC source select (use generator) */
+    XVtc_SourceSelect sourceSelect = {
+        .VBlankPolSrc = 1,
+        .VSyncPolSrc = 1,
+        .HBlankPolSrc = 1,
+        .HSyncPolSrc = 1,
+        .ActiveVideoPolSrc = 1,
+        .ActiveChromaPolSrc = 1,
+        .VChromaSrc = 1,
+        .VActiveSrc = 1,
+        .VBackPorchSrc = 1,
+        .VSyncSrc = 1,
+        .VFrontPorchSrc = 1,
+        .VTotalSrc = 1,
+        .HActiveSrc = 1,
+        .HBackPorchSrc = 1,
+        .HSyncSrc = 1,
+        .HFrontPorchSrc = 1,
+        .HTotalSrc = 1
+    };
+
+    /* Configure VTC */
+    XVtc_RegUpdateEnable(&vtc);
+    XVtc_SetGeneratorTiming(&vtc, &vtcTiming);
+    XVtc_SetSource(&vtc, &sourceSelect);
+    XVtc_EnableGenerator(&vtc);
+
+    /* Configure VDMA */
+    XAxiVdma_DmaSetup vdmaConfig;
+    vdmaConfig.VertSizeInput = 480;              /* Height */
+    vdmaConfig.HoriSizeInput = 640 * 4;          /* Width * bytes per pixel */
+    vdmaConfig.Stride = stride;                   /* Stride */
+    vdmaConfig.FrameDelay = 0;                   /* No frame delay */
+    vdmaConfig.EnableCircularBuf = 1;            /* Circular buffering enabled */
+    vdmaConfig.EnableSync = 0;                   /* Gen-Lock disabled */
+    vdmaConfig.PointNum = 0;                     /* No gen-lock points */
+    vdmaConfig.EnableFrameCounter = 0;           /* Frame counter disabled */
+    vdmaConfig.FixedFrameStoreAddr = 0;          /* Start with frame 0 */
+
+    /* Set frame buffer address */
+    vdmaConfig.FrameStoreStartAddr[0] = (u32)framePtr;
+
+    /* Configure and start VDMA */
+    status = XAxiVdma_DmaConfig(vdma, XAXIVDMA_READ, &vdmaConfig);
+    if (status != XST_SUCCESS) {
+        DEBUG_PRINT("Read channel config failed %d\r\n", status);
+        return XST_FAILURE;
+    }
+
+    status = XAxiVdma_DmaSetBufferAddr(vdma, XAXIVDMA_READ, &vdmaConfig.FrameStoreStartAddr[0]);
+    if (status != XST_SUCCESS) {
+        DEBUG_PRINT("Read channel set buffer address failed %d\r\n", status);
+        return XST_FAILURE;
+    }
+
+    status = XAxiVdma_DmaStart(vdma, XAXIVDMA_READ);
+    if (status != XST_SUCCESS) {
+        DEBUG_PRINT("Start read transfer failed %d\r\n", status);
+        return XST_FAILURE;
+    }
+
+    /* Enable frame counter and park on frame 0 */
+    status = XAxiVdma_StartParking(vdma, 0, XAXIVDMA_READ);
+    if (status != XST_SUCCESS) {
+        DEBUG_PRINT("Unable to park the channel %d\r\n", status);
+        return XST_FAILURE;
+    }
+
+    return XST_SUCCESS;
+}
+
+int DisplayStart() {
+    int Status;
+    XVtc_Timing vtcTiming;
+    XVtc_SourceSelect sourceSelect;
+
+    /* Configure VTC timing for 640x480 @ 60Hz */
+    vtcTiming.HActiveVideo = 640;  /* Active horizontal video */
+    vtcTiming.HFrontPorch = 16;    /* Horizontal front porch */
+    vtcTiming.HSyncWidth = 96;     /* Horizontal sync width */
+    vtcTiming.HBackPorch = 48;     /* Horizontal back porch */
+    vtcTiming.HSyncPolarity = 1;   /* Horizontal sync polarity (1 = negative) */
+
+    vtcTiming.VActiveVideo = 480;  /* Active vertical video */
+    vtcTiming.V0FrontPorch = 10;   /* Vertical front porch */
+    vtcTiming.V0SyncWidth = 2;     /* Vertical sync width */
+    vtcTiming.V0BackPorch = 33;    /* Vertical back porch */
+    vtcTiming.V1FrontPorch = 10;   /* Same as V0 for non-interlaced */
+    vtcTiming.V1SyncWidth = 2;     /* Same as V0 for non-interlaced */
+    vtcTiming.V1BackPorch = 33;    /* Same as V0 for non-interlaced */
+    vtcTiming.VSyncPolarity = 1;   /* Vertical sync polarity (1 = negative) */
+    vtcTiming.Interlaced = 0;      /* Non-interlaced */
+
+    /* Setup the VTC Source Select (use generator) */
+    memset((void *)&sourceSelect, 0, sizeof(sourceSelect));
+    sourceSelect.VBlankPolSrc = 1;
+    sourceSelect.VSyncPolSrc = 1;
+    sourceSelect.HBlankPolSrc = 1;
+    sourceSelect.HSyncPolSrc = 1;
+    sourceSelect.ActiveVideoPolSrc = 1;
+    sourceSelect.ActiveChromaPolSrc = 1;
+    sourceSelect.VChromaSrc = 1;
+    sourceSelect.VActiveSrc = 1;
+    sourceSelect.VBackPorchSrc = 1;
+    sourceSelect.VSyncSrc = 1;
+    sourceSelect.VFrontPorchSrc = 1;
+    sourceSelect.VTotalSrc = 1;
+    sourceSelect.HActiveSrc = 1;
+    sourceSelect.HBackPorchSrc = 1;
+    sourceSelect.HSyncSrc = 1;
+    sourceSelect.HFrontPorchSrc = 1;
+    sourceSelect.HTotalSrc = 1;
+
+    /* Configure and start VTC */
+    XVtc vtc;  /* VTC instance */
+    XVtc_Config *vtcConfig = XVtc_LookupConfig(DISP_VTC_ID);
+    if (vtcConfig == NULL) {
+        DEBUG_PRINT("No VTC found for ID %d\r\n", DISP_VTC_ID);
+        return XST_FAILURE;
+    }
+
+    Status = XVtc_CfgInitialize(&vtc, vtcConfig, vtcConfig->BaseAddress);
+    if (Status != XST_SUCCESS) {
+        DEBUG_PRINT("VTC Configuration Initialization failed %d\r\n", Status);
+        return XST_FAILURE;
+    }
+
+    XVtc_RegUpdateEnable(&vtc);
+    XVtc_SetGeneratorTiming(&vtc, &vtcTiming);
+    XVtc_SetSource(&vtc, &sourceSelect);
+    XVtc_EnableGenerator(&vtc);
+
+    /* Configure VDMA */
+    XAxiVdma_DmaSetup vdmaConfig;
+    vdmaConfig.VertSizeInput = 480;        /* Height */
+    vdmaConfig.HoriSizeInput = 640 * 4;    /* Width * bytes per pixel */
+    vdmaConfig.Stride = DISP_STRIDE;       /* Stride */
+    vdmaConfig.FrameDelay = 0;             /* No frame delay */
+    vdmaConfig.EnableCircularBuf = 1;      /* Circular buffering enabled */
+    vdmaConfig.EnableSync = 0;             /* Gen-Lock disabled */
+    vdmaConfig.PointNum = 0;               /* No gen-lock points */
+    vdmaConfig.EnableFrameCounter = 0;     /* Frame counter disabled */
+    vdmaConfig.FixedFrameStoreAddr = 0;    /* Start with frame 0 */
+
+    /* Set frame buffer address */
+    vdmaConfig.FrameStoreStartAddr[0] = (u32)frame_ptr;
+
+    /* Configure and start VDMA */
+    Status = XAxiVdma_DmaConfig(&vdma, XAXIVDMA_READ, &vdmaConfig);
+    if (Status != XST_SUCCESS) {
+        DEBUG_PRINT("Read channel config failed %d\r\n", Status);
+        return XST_FAILURE;
+    }
+
+    Status = XAxiVdma_DmaSetBufferAddr(&vdma, XAXIVDMA_READ, &vdmaConfig.FrameStoreStartAddr[0]);
+    if (Status != XST_SUCCESS) {
+        DEBUG_PRINT("Read channel set buffer address failed %d\r\n", Status);
+        return XST_FAILURE;
+    }
+
+    Status = XAxiVdma_DmaStart(&vdma, XAXIVDMA_READ);
+    if (Status != XST_SUCCESS) {
+        DEBUG_PRINT("Start read transfer failed %d\r\n", Status);
+        return XST_FAILURE;
+    }
+
+    Status = XAxiVdma_StartParking(&vdma, 0, XAXIVDMA_READ);
+    if (Status != XST_SUCCESS) {
+        DEBUG_PRINT("Unable to park the channel %d\r\n", Status);
+        return XST_FAILURE;
+    }
+
+    return XST_SUCCESS;
+}
+
