@@ -138,6 +138,12 @@ void DemoInitialize()
 #define FRAME_PIXEL_G(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 1]
 #define FRAME_PIXEL_R(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 2]
 #define FRAME_PIXEL_A(frame, x, y, stride) frame[FRAME_PIXEL(x, y, stride) + 3]
+#define PIXEL(frame, red, green, blue, x, y) {\
+	FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = red;\
+	FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = green;\
+	FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = blue;\
+}
+#define POINT(frame, red, green, blue, x, y) PIXEL(frame, red, green, blue, x, y)
 
 void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 
@@ -148,9 +154,7 @@ void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 				y1 = temp;
 		}
 		for (int y = y0; y <= y1; y++){
-			FRAME_PIXEL_R(frame,x0,y,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x0,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x0,y,dispCtrl.stride) = blue;
+			PIXEL(frame,red,green,blue,x0,y);
 		}
 	}else if(y0 == y1){//horizontal linje
 		if(y0 > y1){
@@ -159,9 +163,7 @@ void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 			y1 = temp;
 		}
 		for (int x = x0; x <= x1; x++){
-			FRAME_PIXEL_R(frame,x,y0,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x,y0,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y0,dispCtrl.stride) = blue;
+			PIXEL(frame,red,green,blue,x,y0);
 		}
 	}else if(abs(y1-y0) < abs(x1 -x0)){//low
 
@@ -185,9 +187,7 @@ void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 		int y = y0;
 
 		for (int x = x0; x <= x1; x++){
-			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+			PIXEL(frame,red,green,blue,x,y);
 			if (D > 0){
 				y += yi;
 				D += (2 * (dy - dx));
@@ -217,9 +217,7 @@ void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 		int x = x0;
 
 		for (int y = y0; y <= y1;y++){
-			FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-			FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
+			PIXEL(frame,red,green,blue,x,y);
 			if (D > 0){
 				x += xi;
 				D += (2 * (dx - dy));
@@ -231,34 +229,27 @@ void line(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int x1, int y1){
 }
 
 void rect(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int width, int height, u8 fill){
-	if (fill){
-		for(int x = x0; x <= x0 + width; x++){
-			for (int y = y0; y < y0 + height; y++){
-				FRAME_PIXEL_R(frame,x,y,dispCtrl.stride) = red;
-				FRAME_PIXEL_G(frame,x,y,dispCtrl.stride) = green;
-				FRAME_PIXEL_B(frame,x,y,dispCtrl.stride) = blue;
-			}
-		}
-	}else{
-		for(int x = x0; x <= x0 + width; x++){
-			FRAME_PIXEL_R(frame,x,y0         ,dispCtrl.stride) = red;//top
-			FRAME_PIXEL_G(frame,x,y0         ,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y0         ,dispCtrl.stride) = blue;
+	if (fill) {
+	    for (int x = x0; x <= x0 + width; x++) {
+	        for (int y = y0; y <= y0 + height; y++) {
+	            PIXEL(frame,red,green,blue,x,y);
+	        }
+	    }
+	} else {
+	    for (int x = x0; x <= x0 + width; x++) {
 
-			FRAME_PIXEL_R(frame,x,y0 + height,dispCtrl.stride) = red;//bottom
-			FRAME_PIXEL_G(frame,x,y0 + height,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x,y0 + height,dispCtrl.stride) = blue;
-		}
-		for(int y = y0; y <= y0 + width; y++){
-			FRAME_PIXEL_R(frame,x0,y        ,dispCtrl.stride) = red;//left
-			FRAME_PIXEL_G(frame,x0,y        ,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x0,y        ,dispCtrl.stride) = blue;
-
-			FRAME_PIXEL_R(frame,x0 + width,y,dispCtrl.stride) = red; //right
-			FRAME_PIXEL_G(frame,x0 + width,y,dispCtrl.stride) = green;
-			FRAME_PIXEL_B(frame,x0 + width,y,dispCtrl.stride) = blue;
-		}
+	    	PIXEL(frame, red, green, blue, x, y0         );//top
+			PIXEL(frame, red, green, blue, x, y0 + height);//bottom
+	    }
+	    for (int y = y0; y <= y0 + height; y++) {
+	        PIXEL(frame, red, green, blue, x0        , y );//left
+	        PIXEL(frame, red, green, blue, x0 + width, y );//right
+	    }
 	}
+}
+
+void rectCenter(u8* frame, u8 red, u8 green, u8 blue, int x0, int y0, int width, int height, u8 fill){
+	rect(frame,red,green,blue,x0-(width/2),y0-(height/2),width,height,fill);
 }
 
 void DemoRun()
@@ -275,24 +266,21 @@ void DemoRun()
 	// Clear display every loop
 			for (int y = 0; y < dispCtrl.vMode.height; y++) {
 				for (int x = 0; x < dispCtrl.vMode.width; x++) {
-					FRAME_PIXEL_R(frame, x, y, dispCtrl.stride) = 0x00;
-					FRAME_PIXEL_G(frame, x, y, dispCtrl.stride) = 0x00;
-					FRAME_PIXEL_B(frame, x, y, dispCtrl.stride) = 0x00;
+					PIXEL(frame,0,0,0,x,y);
 				}
 			}
 
 	for (;;) {
 
-		//   frame,r  ,g  ,b  ,x0 ,y0 ,x1 ,y1
-		line(frame,255,000,000,000,000,639,000);//top
-		line(frame,000,255,000,639,000,639,479);//rigth
-		line(frame,000,000,255,000,479,639,479);//bottom
-		line(frame,255,255,000,000,000,000,479);//left
-		line(frame,255,000,255,000,000,639,479);//diag down
-		line(frame,000,255,255,000,479,639,000);//diag up
+		for (int x = 0; x < dispCtrl.vMode.width;  x+=10){
+			line(frame,110,110,110,x,dispCtrl.vMode.height,x,0);
+		}
+		for (int y = 0; y < dispCtrl.vMode.height;  y+=10){
+			line(frame,110,110,110,dispCtrl.vMode.width,y,0,y);
+		}
 
 		rect(frame,255,255,255,000,000,200,200, 0);//non solid
-		rect(frame,255,255,255,062,062,100,100, 0);//solid
+		rect(frame,255,255,255, 50, 50,100,100, 1);//solid
 		Xil_DCacheFlushRange((unsigned int) frame, DEMO_MAX_FRAME);
 
 		TimerDelay(10000);
