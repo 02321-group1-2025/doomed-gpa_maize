@@ -34,7 +34,7 @@ enum Direction player_cardinal_direction(player_t *player) {
 }
 
 void
-player_move(player_t *player, char user_input) {
+player_move(player_t *player, char user_input, maze_t *maze) {
 	int player_size = player->size;
 
 	// Save player pos and grid pos if they collide with shit
@@ -89,10 +89,10 @@ player_move(player_t *player, char user_input) {
 			break;
 		}
 	}
-	player->grid_pos = player_grid_position(player);
+	player->grid_pos = player_grid_position(player, maze);
 
 
-	bool player_does_collide = player_collision(player, &MAZE_0);
+	bool player_does_collide = player_collision(player, maze);
 	if (player_does_collide == true) { // TODO: Collision bad. Snap to wall plz
 //		switch (direction) {
 //			case NORTH: { // Up
@@ -150,10 +150,10 @@ player_draw(player_t *player, uint8_t *framebuf) {
 }
 
 bool
-player_collision(player_t *player, uint8_t *maze) {
-	grid_t player_grid_pos = player_grid_position(player);
+player_collision(player_t *player, maze_t *maze) {
+	grid_t player_grid_pos = player_grid_position(player, maze);
 
-	if (MAZE_CELL(maze, player_grid_pos.col, player_grid_pos.row) == 1) {
+	if (!isPath(maze, player_grid_pos.col, player_grid_pos.row)) {
 		return true;
 	}
 
@@ -161,9 +161,9 @@ player_collision(player_t *player, uint8_t *maze) {
 }
 
 grid_t
-player_grid_position(player_t *player) {
-	int col = (player->x / GRID_INTERVAL_X);
-	int row = (player->y / GRID_INTERVAL_Y);
+player_grid_position(player_t *player, maze_t *maze) {
+	int col = (player->x / (DISPLAY_WIDTH / maze->width));
+	int row = (player->y / (DISPLAY_HEIGHT / maze->height));
 
 	return (grid_t) {col, row};
 }

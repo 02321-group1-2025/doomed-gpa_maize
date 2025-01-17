@@ -1,13 +1,10 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-//#include "time.h"
-#include "xil_printf.h"
+﻿#include "stdlib.h"
+#include "stdio.h"
+#include "stdint.h"
+#include "time.h"
+#include "labyrinth.h"
 
-#include "maaze.h"
-
-//#define Debug 1
-#define printf xil_printf
+#define Debug 1
 
 typedef struct linkedList {
     uint32_t data;
@@ -29,26 +26,27 @@ uint16_t getX (uint32_t point) {
 uint16_t getY (uint32_t point) {
 	return point & 0xFFFF;
 }
-uint32_t makePoint (uint16_t x, uint16_t y) {
-	return (((uint32_t) x) << 16) | (uint32_t) y;
-}
-#define mazeArray(maze,x,y) maze->data [y * maze->width + x]
+#define makePoint(x,y) (((uint32_t) x) << 16) | (uint32_t) y
 
 int isPath (maze_t* maze, uint16_t x, uint16_t y) {
     if(isValid (maze, x, y)) {
-        return mazeArray(maze,x,y) != 0;
+        unsigned int num = maze->data [y * maze->width + x] & 0x8000;
+        return num != 0;
     } else {
 		return 0;
     }
 }
 int setPath (maze_t* maze, uint16_t x, uint16_t y, uint8_t path) {
     if(isValid (maze, x, y) && !isPath(maze,x,y)) {
-		mazeArray (maze, x, y) = path;
+        if(path == 0) {
+            mazeArray (maze, x, y) &= 0x7FFF  ;
+        } else {
+			mazeArray (maze, x, y) |= 0x8000;
+        }
 		return 1;
 	} else {
 		return 0;
-	}
-	return 0;
+    }
 }
 
 /**
@@ -61,9 +59,6 @@ int setPath (maze_t* maze, uint16_t x, uint16_t y, uint8_t path) {
  * @return new points to be checked
  */
 quadPoint_t* modelMaze (maze_t* maze, uint16_t x, uint16_t y, uint8_t density, uint8_t scramble, uint16_t ensurance) {
-    #ifdef debug
-	    updateMaze (maze);
-    #endif
     if(!isValid (maze, x, y)) return NULL;
     uint8_t paths = 0;
     paths += isPath (maze, x + 1, y);
@@ -92,7 +87,7 @@ quadPoint_t* modelMaze (maze_t* maze, uint16_t x, uint16_t y, uint8_t density, u
  * @return shuffled points
  */
 void shuffle (linkedList_t* list) {
-    //srand (1);
+    //srand ((unsigned) time (NULL));
     uint32_t length = 0;
     linkedList_t* tempArr = list;
     uint32_t index = 0;
@@ -150,7 +145,8 @@ maze_t* BuildMaze (uint16_t width, uint16_t height, uint8_t density, uint8_t scr
         free (maze);
         return NULL;
     }
-	maze->start = makePoint (startX, startY);
+	maze->startX = startX;
+	maze->startY = startY;
     setPath (maze, startX, startY, 1);
 
     linkedList_t* OldPoints = malloc (sizeof (linkedList_t));
@@ -159,17 +155,14 @@ maze_t* BuildMaze (uint16_t width, uint16_t height, uint8_t density, uint8_t scr
         free (maze);
         return NULL;
     }
-    #ifdef debug
-	    printMaze (maze);
-    #endif
     OldPoints->data = (startX << 16) | startY;
     OldPoints->next = NULL;
     while(1) {
         linkedList_t* NewPoints = NULL;
         while(OldPoints != NULL) {
-            /*if(rand () % 255 > 25) {//95 % chance to skip
+            if(rand () % 255 > 240) {//0 % chance to skip
                 break;
-            }*/
+            }
             linkedList_t* temp = OldPoints;
             OldPoints = OldPoints->next;
             uint16_t x = temp->data >> 16;
@@ -250,6 +243,7 @@ maze_t* BuildMaze (uint16_t width, uint16_t height, uint8_t density, uint8_t scr
         shuffle (OldPoints);
     }
 	freeList (OldPoints);
+
     return maze;
 }
 
@@ -263,71 +257,93 @@ maze_t* BuildMaze (uint16_t width, uint16_t height, uint8_t density, uint8_t scr
  * @return a passing labyrinth
  */
 uint8_t labyrinthTest (maze_t* maze, uint16_t endX, uint16_t endY) {
+    uint8_t out = 0;
     int sum = 0;
     for(int x = 0; x < maze->width; x++) {
         for(int y = 0; y < maze->height; y++) {
             sum += isPath (maze, x, y);
         }
     }
-    if((float) sum > (maze->width * maze->height) / 2) {
-        if(!setPath (maze, endX, endY, 1)) {
-            uint8_t found = 0;
-            found += isPath (maze, endX + 1, endY);
-            found += isPath (maze, endX - 1, endY);
-            found += isPath (maze, endX, endY + 1);
-            found += isPath (maze, endX, endY - 1);
-            if(found == 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+	if(sum < maze->width * maze->height / 3) {
+		out |= 0b10;
+	}
+	if(!isPath (maze, endX, endY)) {
+        if(
+            isPath (maze, endX + 1, endY) || 
+            isPath (maze, endX - 1, endY) || 
+            isPath (maze, endX, endY + 1) || 
+            isPath (maze, endX, endY - 1)
+        ) {
+            setPath (maze, endX, endY, 1);
+            out |= 0b100;
+        } else {
+            out |= 0b1;
         }
-    }
-    return 0;
+	}
+    return out;
 }
 
 /*
  @param maze the maze to be printed
 */
 void printMaze (maze_t* maze) {
-    for(size_t i = 0; i < maze->width+2; i++) {
+    for(size_t i = 0; i < maze->width; i++) {
         printf ("-");
-    }printf ("\r\n");
+    }printf ("--\n");
     for(int y = 0; y < maze->height; y++) {
 		printf ("|");
         for(int x = 0; x < maze->width; x++) {
             if(isPath (maze, x, y)) {
-                printf ("#");
-            } else {
                 printf (" ");
+            } else {
+                printf ("#");
             }
         }
 		printf ("|");
-        printf ("\r\n");
+        printf ("\n");
     }
-    for(size_t i = 0; i < maze->width+2; i++) {
+    for(size_t i = 0; i < maze->width; i++) {
         printf ("-");
-    }printf ("r\n");
+    }printf ("--\n");
 }
 /*
- @param maze moves the cursor to the start of a maze, must be called after a printmaze
+ moves the cursor to the start of a maze and prints the maze again, must be called after a printmaze
 */
 void updateMaze (maze_t* maze) {
-    printf ("\033[%dA\r",maze->width);
+    printf ("\033[%dA\r",maze->width+2);
 	printMaze (maze);
 }
-
-//int main () {
-//    srand ((unsigned) time (NULL));
-//    maze_t* maze = BuildMaze (20, 20, 0, 100, 0, 0);
-//    if(maze == NULL) {
-//        printf ("Failed to build maze\n");
-//        return;
-//    }
-//    printMaze (maze);
-//	if(labyrinthTest (maze,19,19)) {
-//		printf ("Labyrinth passed\n");
-//    } else {
-//		printf ("Labyrinth failed\n");
-//	}
-//}
+/*
+int main () {
+    int correct = 0;
+    int max = 0xffff;
+    for(int i = 0; i < max; i++) {
+        srand (i);
+        maze_t* maze = BuildMaze (20, 20, 0, 100, 0, 0);
+        if(maze == NULL) {
+            printf ("Failed to build maze\n");
+            return;
+        }
+        int test = labyrinthTest (maze, 19, 19);
+        /*
+        if(test == 0) {
+            printf ("succeeded in making maze\n");
+        } else {
+            if(test & 0b1) {
+                printf ("end point not connected\n");
+            }
+            if(test & 0b10) {
+                printf ("failed to make enough paths\n");
+            }
+            if(test & 0b100) {
+                printf ("end point was not connected, but was fixed\n");
+            }
+        }*//*
+        printf ("%d/%d %f %% done, %f %% succes\r", i, max, i/(float)max * 100, correct / (float) i * 100);
+        if(test == 0 || test == 0b100) {
+			correct++;
+		}
+    }
+    printf ("\n%d/%d %f %% labyrinths work", correct,max,correct/(float)max * 100);
+}
+*/

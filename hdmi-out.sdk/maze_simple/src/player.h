@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "grid.h"
+#include "labyrinth.h"
 
 typedef struct Player {
 	int32_t x;
@@ -20,9 +21,9 @@ typedef struct Player {
 } player_t;
 
 
-void player_move(player_t *player, char user_input);
+void player_move(player_t *player, char user_input, maze_t *maze);
 void player_draw(player_t *player, uint8_t *framebuf);
-bool player_collision(player_t *player, uint8_t *maze);
-grid_t player_grid_position(player_t *player);
+bool player_collision(player_t *player, maze_t *maze);
+grid_t player_grid_position(player_t *player, maze_t *maze);
 
 #endif

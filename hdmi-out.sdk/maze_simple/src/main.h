@@ -2,7 +2,7 @@
 #define SRC_MAIN_H_
 
 #include "xparameters.h"
-
+#include "labyrinth.h"
 /* Configuration constants */
 
 /* Hardware constants from xparameters.h */
@@ -17,7 +17,7 @@
 void initialize_display(void);
 void draw_frame(void);
 void draw_maze(uint8_t *maze, uint8_t *frame_buf, uint8_t *maze_buf);
-void generate_maze_buffer(uint8_t *maze, uint8_t *maze_buf);
+void generate_maze_buffer(maze_t *maze, uint8_t *maze_buf);
 
 
 #endif /* SRC_MAIN_H_ */

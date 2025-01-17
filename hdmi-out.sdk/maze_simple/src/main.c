@@ -15,13 +15,13 @@
 #include "maze.h"
 #include "display.h"
 
-#include "maaze.h"
+#include "labyrinth.h"
 
 #define printf xil_printf
 
 #define NUM_FRAMES 2
 
-void ray_casting(u8 *framebuf, player_t *player, u8 *maze);
+void ray_casting(u8 *framebuf, player_t *player, maze_t *maze);
 
 /* Global variables */
 DisplayCtrl disp_ctrl; // Display controller instance
@@ -67,8 +67,9 @@ main(void)
     const u32 timer_count = (TIMER_FREQ_HZ / 1000000) * target_frame_time;
 
     player_t player = {
-    		.x = 70,
-			.y = 50,
+    		.x = 16,
+			.y = 12,
+			.angle = M_PI/2,
 
 			.vx = 2,
 			.vy = 2,
@@ -76,8 +77,17 @@ main(void)
 			.size = 10,
     };
 
-    uint8_t *maze = &MAZE_0;
-    generate_maze_buffer(&MAZE_0, maze_buf);
+    maze_t *maze = NULL;
+    uint8_t result = 0;
+    do{
+    	if(maze != NULL){
+    		free(maze->data);
+    		free(maze);
+    	}
+    	maze = BuildMaze (20, 20, 0, 100, 0, 0);
+    	result = labyrinthTest(maze,19,19);
+    }while(result != 0 && result != 0b100);
+    generate_maze_buffer(maze, maze_buf);
 
     /* Flush UART FIFO */
 	while (XUartPs_IsReceiveData(UART_BASEADDR)) {
@@ -124,7 +134,7 @@ main(void)
 			player_draw(&player, cur_frame_ptr);
 		}
 		else {
-//			// "Skybox"
+			// "Skybox"
 			rect(cur_frame_ptr,
 				 0x87, 0xCE, 0xEB, // Sky blue
 				 0, 0,
@@ -143,7 +153,7 @@ main(void)
 			ray_casting(cur_frame_ptr, &player, maze);
 		}
 
-		player_move(&player, user_input);
+		player_move(&player, user_input, maze);
 		//player_collision(&player, maze);
 
 
@@ -271,20 +281,22 @@ draw_maze(uint8_t *maze, uint8_t *frame_buf, uint8_t *maze_buf) {
 }
 
 void
-generate_maze_buffer(uint8_t *maze, uint8_t *maze_buf) {
-    const int CELL_WIDTH = DISPLAY_WIDTH / MAZE_SIZE;  // 32 pixels
-    const int CELL_HEIGHT = DISPLAY_HEIGHT / MAZE_SIZE; // 24 pixels
+generate_maze_buffer(maze_t *maze, uint8_t *maze_buf) {
+    const int CELL_WIDTH = DISPLAY_WIDTH / maze->width;  // 32 pixels
+    const int CELL_HEIGHT = DISPLAY_HEIGHT / maze->height; // 24 pixels
 
     // Clear buffer first
     memset(maze_buf, 0, FRAME_SIZE);
 
     // Generate the maze visualization once
-    for (int row = 0; row < MAZE_SIZE; row++) {
-        for (int col = 0; col < MAZE_SIZE; col++) {
+    for (int row = 0; row < maze->height; row++) {
+        for (int col = 0; col < maze->width; col++) {
             int x = col * CELL_WIDTH;
             int y = row * CELL_HEIGHT;
 
-            if (maze[row * MAZE_SIZE + col]) {
+            int path_debug = isPath(maze, col, row);
+
+            if (!path_debug) {
                 // Draw wall in white
                 rect(maze_buf, 0xFF, 0xFF, 0xFF, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
             } else {
@@ -299,9 +311,9 @@ generate_maze_buffer(uint8_t *maze, uint8_t *maze_buf) {
 }
 
 void
-ray_casting(u8 *framebuf, player_t *player, u8 *maze) {
+ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 
-    const float FOV = M_PI / 2;  // 90 degrees FOV
+    const float FOV = (120 * 2 * M_PI)/360;  // 90 degrees FOV
     const int NUM_RAYS = DISPLAY_WIDTH;  // One ray per vertical screen column
     const float ANGLE_STEP = FOV / NUM_RAYS;  // Angle between rays
 
@@ -347,8 +359,8 @@ ray_casting(u8 *framebuf, player_t *player, u8 *maze) {
 //		float ray_length = sqrtf(ray_x * ray_x + ray_y * ray_y);
 //    }
     const float STEP_SIZE = 1.0f;
-    const int MAX_DEPTH = MAZE_SIZE * GRID_INTERVAL_X; // Maximum ray length
-    const int WALL_SCALE = DISPLAY_HEIGHT / 4;
+    const int MAX_DEPTH = (maze->width > maze->height ? maze->width : maze->height) * GRID_INTERVAL_X; // Maximum ray length
+    const int WALL_SCALE = DISPLAY_HEIGHT / 16;
 
 
 
@@ -371,9 +383,7 @@ ray_casting(u8 *framebuf, player_t *player, u8 *maze) {
 			int map_y = ray_y / GRID_INTERVAL_Y;
 
 			// Check bounds and wall collision
-			if(map_x < 0 || map_x >= MAZE_SIZE ||
-			   map_y < 0 || map_y >= MAZE_SIZE ||
-			   MAZE_CELL(maze, map_x, map_y) == 1) {
+			if(!isPath(maze,(int)map_x,(int)map_y)) {
 				break;
 			}
 
@@ -387,7 +397,7 @@ ray_casting(u8 *framebuf, player_t *player, u8 *maze) {
 							   (ray_y - player->y) * (ray_y - player->y));
 
 		// Apply fisheye correction
-		float corrected_distance = distance * cosf(ray_angle - player->angle);
+		float corrected_distance = 0.5f * distance * cosf(ray_angle - player->angle);
 
 		// Calculate wall height (inversely proportional to distance)
 		int wall_height = (DISPLAY_HEIGHT / corrected_distance) * WALL_SCALE;
