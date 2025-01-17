@@ -1,0 +1,501 @@
+#include "display_ctrl/display_ctrl.h"
+#include "xuartps.h"
+#include "xil_cache.h"
+#include "timer_ps/timer_ps.h"
+#include "xparameters.h"
+#include "xil_printf.h"
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "main.h"
+#include "xscutimer.h"
+#include "draw.h"
+#include "player.h"
+#include "maze.h"
+#include "display.h"
+
+#include "maaze.h"
+
+#define printf xil_printf
+
+#define NUM_FRAMES 2
+
+void ray_casting(u8 *framebuf, player_t *player, u8 *maze);
+
+/* Global variables */
+DisplayCtrl disp_ctrl; // Display controller instance
+XAxiVdma vdma; // Video DMA instance
+u8 frame_buf[NUM_FRAMES][FRAME_SIZE] __attribute__((aligned(32))); // Single frame buffer
+u8 *frame_ptr[NUM_FRAMES];
+u8 maze_buf[FRAME_SIZE] __attribute__((aligned(32)));
+
+extern XScuTimer TimerInstance;
+
+int
+main(void)
+{
+    // Initialize the display system
+    initialize_display();
+
+	int next_frame = 0;
+	u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+
+	// Clear the frame buffer
+	//memset(frame_buf, 0, FRAME_SIZE);
+	for (int y = 0; y < DISPLAY_HEIGHT; y++) {
+		for (int x = 0; x < DISPLAY_WIDTH; x++) {
+			FRAME_PIXEL_B(frame_buf[0], x, y) = 0x00;
+			FRAME_PIXEL_G(frame_buf[0], x, y) = 0x00;
+			FRAME_PIXEL_R(frame_buf[0], x, y) = 0xFF;
+			FRAME_PIXEL_A(frame_buf[0], x, y) = 0xFF;
+		}
+	}
+	Xil_DCacheFlushRange((unsigned int) frame_buf[0], FRAME_SIZE);
+
+	for (int y = 0; y < DISPLAY_HEIGHT; y++) {
+		for (int x = 0; x < DISPLAY_WIDTH; x++) {
+			FRAME_PIXEL_B(frame_buf[1], x, y) = 0xFF;
+			FRAME_PIXEL_G(frame_buf[1], x, y) = 0x00;
+			FRAME_PIXEL_R(frame_buf[1], x, y) = 0x00;
+			FRAME_PIXEL_A(frame_buf[1], x, y) = 0xFF;
+		}
+	}
+	Xil_DCacheFlushRange((unsigned int) frame_buf[1], FRAME_SIZE);
+
+    const u32 target_frame_time = 1000000 / 20; // Target 30fps in microseconds
+    const u32 timer_count = (TIMER_FREQ_HZ / 1000000) * target_frame_time;
+
+    player_t player = {
+    		.x = 70,
+			.y = 50,
+
+			.vx = 2,
+			.vy = 2,
+
+			.size = 10,
+    };
+
+    uint8_t *maze = &MAZE_0;
+    generate_maze_buffer(&MAZE_0, maze_buf);
+
+    /* Flush UART FIFO */
+	while (XUartPs_IsReceiveData(UART_BASEADDR)) {
+		XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
+	}
+
+	char user_input = 0;
+
+	bool map_toggle = false;
+
+	// Main loop - continuously update the display
+	while (1) {
+		XScuTimer_Stop(&TimerInstance);
+		XScuTimer_DisableAutoReload(&TimerInstance);
+		XScuTimer_LoadTimer(&TimerInstance, timer_count);  // Load maximum value
+		XScuTimer_Start(&TimerInstance);
+		u32 start_time = XScuTimer_GetCounterValue(&TimerInstance);
+
+		next_frame = disp_ctrl.curFrame + 1;
+		if (next_frame >= NUM_FRAMES) {
+			next_frame = 0;
+		}
+
+		u8 *cur_frame_ptr = disp_ctrl.framePtr[next_frame];
+
+		memset(cur_frame_ptr, 0, FRAME_SIZE);
+
+		user_input = 0;
+		if (XUartPs_IsReceiveData(UART_BASEADDR)){
+			user_input = XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
+		}
+
+		if (user_input == 'm' || user_input == 'M') {
+			map_toggle = !map_toggle;
+		}
+
+		// Clear frame pointer
+		memset(cur_frame_ptr, 0, FRAME_SIZE);
+
+		if (map_toggle) {
+			// Draw maze
+			memcpy(cur_frame_ptr, maze_buf, FRAME_SIZE);
+
+			player_draw(&player, cur_frame_ptr);
+		}
+		else {
+//			// "Skybox"
+			rect(cur_frame_ptr,
+				 0x87, 0xCE, 0xEB, // Sky blue
+				 0, 0,
+				 DISPLAY_WIDTH, (DISPLAY_HEIGHT/2),
+				 1
+				 );
+
+			// "Ground"
+			rect(cur_frame_ptr,
+				 0x32, 0xCD, 0x32, // Lime green
+				 0, (DISPLAY_HEIGHT/2),
+				 DISPLAY_WIDTH, (DISPLAY_HEIGHT/2),
+				 1
+				 );
+
+			ray_casting(cur_frame_ptr, &player, maze);
+		}
+
+		player_move(&player, user_input);
+		//player_collision(&player, maze);
+
+
+
+		// Flush cache to ensure the frame buffer is written to memory
+		Xil_DCacheFlushRange((unsigned int) cur_frame_ptr, FRAME_SIZE);
+
+		u32 end_time = XScuTimer_GetCounterValue(&TimerInstance);
+		u32 elapsed_us = ((timer_count - end_time) * 1000) / (TIMER_FREQ_HZ / 1000); // Convert to microseconds
+
+		DisplayChangeFrame(&disp_ctrl, next_frame);
+
+		u32 delay_us = 0;
+		u32 delay_ticks = 0;
+
+		if (elapsed_us < target_frame_time) {
+		    delay_us = target_frame_time - elapsed_us;
+
+		    // Convert microseconds to timer ticks
+		    delay_ticks = (delay_us * (TIMER_FREQ_HZ / 1000)) / 1000;
+
+
+
+		    //while (XScuTimer_GetCounterValue(&TimerInstance)) {}
+		}
+		while (XScuTimer_GetCounterValue(&TimerInstance)) {}
+
+		printf("\033[2J"); // Clear screen
+		printf("\033[H");  // Move cursor to home
+		printf("Start time: %d\r\n", start_time);
+		printf("End time: %d\r\n", end_time);
+		printf("Elapsed_us: %d\r\n", elapsed_us);
+		printf("Timer delay: %d\r\n", delay_ticks);
+
+		//grid_t grid = player_grid_position(&player);
+		printf("Player grid: (%d, %d)\r\n", player.grid_pos.col, player.grid_pos.row);
+		printf("User input: %c\r\n", user_input);
+		printf("Player angle: %f\r\n", player.angle);
+
+	}
+}
+
+void
+initialize_display(void) {
+	int Status;
+	XAxiVdma_Config *vdmaConfig;
+	int i;
+
+	/*
+	 * Initialize an array of pointers to the 3 frame buffers
+	 */
+	for (i = 0; i < DISPLAY_NUM_FRAMES; i++)
+	{
+		frame_ptr[i] = frame_buf[i];
+	}
+
+	/*
+	 * Initialize a timer used for a simple delay
+	 */
+	TimerInitialize(SCU_TIMER_ID);
+
+	/*
+	 * Initialize VDMA driver
+	 */
+	vdmaConfig = XAxiVdma_LookupConfig(VGA_VDMA_ID);
+	if (!vdmaConfig)
+	{
+		xil_printf("No video DMA found for ID %d\r\n", VGA_VDMA_ID);
+		return;
+	}
+	Status = XAxiVdma_CfgInitialize(&vdma, vdmaConfig, vdmaConfig->BaseAddress);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("VDMA Configuration Initialization failed %d\r\n", Status);
+		return;
+	}
+
+	/*
+	 * Initialize the Display controller and start it
+	 */
+
+	Status = DisplayInitialize(&disp_ctrl, &vdma, DISP_VTC_ID, DYNCLK_BASEADDR, frame_ptr, DISPLAY_STRIDE);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("Display Ctrl initialization failed during demo initialization%d\r\n", Status);
+		return;
+	}
+	Status = DisplayStart(&disp_ctrl);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("Couldn't start display during demo initialization%d\r\n", Status);
+		return;
+	}
+}
+
+void
+draw_frame(void)
+{
+}
+
+void
+draw_maze(uint8_t *maze, uint8_t *frame_buf, uint8_t *maze_buf) {
+    const int CELL_WIDTH = DISPLAY_WIDTH / MAZE_SIZE;  // 32 pixels
+    const int CELL_HEIGHT = DISPLAY_HEIGHT / MAZE_SIZE; // 24 pixels
+
+    // First draw to maze buffer
+    for (int row = 0; row < MAZE_SIZE; row++) {
+        for (int col = 0; col < MAZE_SIZE; col++) {
+            // Calculate the pixel coordinates for this cell
+            int x = col * CELL_WIDTH;
+            int y = row * CELL_HEIGHT;
+
+            if (maze[row * MAZE_SIZE + col]) {
+                // Draw wall in white
+                rect(maze_buf, 0xFF, 0xFF, 0xFF, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
+            } else {
+                // Draw path in dark gray
+                rect(maze_buf, 0x20, 0x20, 0x20, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
+            }
+        }
+    }
+
+    // Copy maze buffer to frame buffer
+    memcpy(frame_buf, maze_buf, FRAME_SIZE);
+}
+
+void
+generate_maze_buffer(uint8_t *maze, uint8_t *maze_buf) {
+    const int CELL_WIDTH = DISPLAY_WIDTH / MAZE_SIZE;  // 32 pixels
+    const int CELL_HEIGHT = DISPLAY_HEIGHT / MAZE_SIZE; // 24 pixels
+
+    // Clear buffer first
+    memset(maze_buf, 0, FRAME_SIZE);
+
+    // Generate the maze visualization once
+    for (int row = 0; row < MAZE_SIZE; row++) {
+        for (int col = 0; col < MAZE_SIZE; col++) {
+            int x = col * CELL_WIDTH;
+            int y = row * CELL_HEIGHT;
+
+            if (maze[row * MAZE_SIZE + col]) {
+                // Draw wall in white
+                rect(maze_buf, 0xFF, 0xFF, 0xFF, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
+            } else {
+                // Draw path in dark gray
+                rect(maze_buf, 0x20, 0x20, 0x20, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
+            }
+        }
+    }
+
+    // Ensure maze buffer is written to memory
+    Xil_DCacheFlushRange((unsigned int) maze_buf, FRAME_SIZE);
+}
+
+void
+ray_casting(u8 *framebuf, player_t *player, u8 *maze) {
+
+    const float FOV = M_PI / 2;  // 90 degrees FOV
+    const int NUM_RAYS = DISPLAY_WIDTH;  // One ray per vertical screen column
+    const float ANGLE_STEP = FOV / NUM_RAYS;  // Angle between rays
+
+    float start_angle = player->angle - FOV/2;
+
+//    for(int i = 0; i < NUM_RAYS; i++) {
+//    	float ray_angle = start_angle + (i * ANGLE_STEP);
+//
+//		// Normalize angle just in case
+//		while(ray_angle < 0) ray_angle += 2*M_PI;
+//		while(ray_angle >= 2*M_PI) ray_angle -= 2*M_PI;
+//
+//		float ray_x = player->x;
+//		float ray_y = player->y;
+//		float x_step = cosf(ray_angle);
+//		float y_step = sinf(ray_angle);
+//
+//		// Step size for more precise collision detection
+//		const float STEP_SIZE = 1.0f;
+//		x_step *= STEP_SIZE;
+//		y_step *= STEP_SIZE;
+//
+//		int dof = 0;
+//		const int MAX_DEPTH = MAZE_SIZE * GRID_INTERVAL_X; // Maximum ray length
+//
+//		// Cast the ray
+//		while(dof < MAX_DEPTH) {
+//			int map_x = ray_x / GRID_INTERVAL_X;
+//			int map_y = ray_y / GRID_INTERVAL_Y;
+//
+//			// Check bounds and wall collision
+//			if(map_x < 0 || map_x >= MAZE_SIZE ||
+//			   map_y < 0 || map_y >= MAZE_SIZE ||
+//			   MAZE_CELL(maze, map_x, map_y) == 1) {
+//				break;
+//			}
+//
+//			ray_x += x_step;
+//			ray_y += y_step;
+//			dof += STEP_SIZE;
+//		}
+//
+//		float ray_length = sqrtf(ray_x * ray_x + ray_y * ray_y);
+//    }
+    const float STEP_SIZE = 1.0f;
+    const int MAX_DEPTH = MAZE_SIZE * GRID_INTERVAL_X; // Maximum ray length
+    const int WALL_SCALE = DISPLAY_HEIGHT / 4;
+
+
+
+    // Cast rays across the FOV
+	for(int i = 0; i < NUM_RAYS; i++) {
+		float ray_angle = start_angle + (i * ANGLE_STEP);
+
+		// Normalize angle
+		while(ray_angle < 0) ray_angle += 2*M_PI;
+		while(ray_angle >= 2*M_PI) ray_angle -= 2*M_PI;
+
+		float ray_x = player->x;
+		float ray_y = player->y;
+		float x_step = cosf(ray_angle) * STEP_SIZE;
+		float y_step = sinf(ray_angle) * STEP_SIZE;
+
+		int dof = 0;
+		while(dof < MAX_DEPTH) {
+			int map_x = ray_x / GRID_INTERVAL_X;
+			int map_y = ray_y / GRID_INTERVAL_Y;
+
+			// Check bounds and wall collision
+			if(map_x < 0 || map_x >= MAZE_SIZE ||
+			   map_y < 0 || map_y >= MAZE_SIZE ||
+			   MAZE_CELL(maze, map_x, map_y) == 1) {
+				break;
+			}
+
+			ray_x += x_step;
+			ray_y += y_step;
+			dof += STEP_SIZE;
+		}
+
+		// Calculate wall height based on distance
+		float distance = sqrtf((ray_x - player->x) * (ray_x - player->x) +
+							   (ray_y - player->y) * (ray_y - player->y));
+
+		// Apply fisheye correction
+		float corrected_distance = distance * cosf(ray_angle - player->angle);
+
+		// Calculate wall height (inversely proportional to distance)
+		int wall_height = (DISPLAY_HEIGHT / corrected_distance) * WALL_SCALE;
+
+		// Calculate vertical wall strip height
+		int wall_top = (DISPLAY_HEIGHT - wall_height) / 2;
+		int wall_bottom = wall_top + wall_height;
+
+		if (wall_top < 0) wall_top = 0;
+		if (wall_bottom > DISPLAY_HEIGHT-1) wall_bottom = DISPLAY_HEIGHT-1;
+
+		// Draw vertical line for this ray
+		uint8_t wall_r = 0xFF;
+		uint8_t wall_g = 0xFF;
+		uint8_t wall_b = 0xFF;
+
+		// Add distance-based darkening
+		float distance_factor = 1.0f - (distance / MAX_DEPTH);
+		wall_r = (uint8_t)(wall_r * distance_factor);
+		wall_g = (uint8_t)(wall_g * distance_factor);
+		wall_b = (uint8_t)(wall_b * distance_factor);
+
+		line(framebuf, wall_r, wall_g, wall_b,  // White color - adjust as needed
+		      i, wall_top,                  // Start point (x, y)
+		      i, wall_bottom);              // End point (x, same x, different y)
+	}
+
+
+
+    // Draw the ray
+    //line(framebuf, 0xFF, 0x00, 0xFF, player->x, player->y, ray_x, ray_y);
+
+//	int cellsize_x = GRID_INTERVAL_X;
+//	int cellsize_y = GRID_INTERVAL_Y;
+//
+//	float ray_angle = player->angle;
+//
+//	// Normalize angle just in case
+//	while(ray_angle < 0) ray_angle += 2*M_PI;
+//	while(ray_angle >= 2*M_PI) ray_angle -= 2*M_PI;
+//
+//	int ys, xs, yn, xn;
+//	float tan_angle = tanf(player->angle);
+//	float atan = -1/tanf(ray_angle);
+//	int player_x = player->x;
+//	int player_y = player->y;
+//
+//	// Horizontal
+//	ys = cellsize_y;
+//	xs = ys / tan_angle;
+//	yn = player->y - (player->y / cellsize_y) * cellsize_y;
+//	xn = yn / tan_angle;
+//
+//	// Vertical
+//	xs = cellsize_x;
+//	ys = xs / tan_angle;
+//	xn = player->x - (player->x / cellsize_x) * cellsize_x;
+//	yn = xn * tan_angle;
+//
+//	int dof = 0;
+//	float ray_x, ray_y;
+//	int y_offset, x_offset;
+//	int map_x, map_y, maze_index;
+//
+//	if (ray_angle > M_PI) { // Looking up
+//		ray_y = player_y - 0.00001;
+//		ray_x = (player_x - ray_y) * atan + player_x;
+//		y_offset = -GRID_INTERVAL_Y;
+//		x_offset = -y_offset * atan;
+//	}
+//	if (ray_angle < M_PI) { // Looking down
+//		ray_y = player_y + GRID_INTERVAL_Y;
+//		ray_x = (player_x - ray_y) * atan + player_x;
+//		y_offset = GRID_INTERVAL_Y;
+//		x_offset = -y_offset * atan;
+//	}
+//
+//	if (ray_angle == 0 || ray_angle == M_PI) {
+//		ray_x = player_x;
+//		ray_y = player_y;
+//		dof = MAZE_SIZE;
+//	}
+//
+//	while (dof < MAZE_SIZE) {
+//		map_x = ray_x / GRID_INTERVAL_X;
+//		map_y = ray_y / GRID_INTERVAL_Y;
+//
+//		if (MAZE_CELL(maze, map_x, map_y) == 1) { // Hit a wall
+//			dof = MAZE_SIZE;
+//		}
+//		else {
+//			ray_x += x_offset;
+//			ray_y += y_offset;
+//			dof += 1;
+//		}
+//	}
+//
+//	if (ray_y < 0) {
+//		ray_y = 0;
+//	}
+//	if (ray_x < 0) {
+//		ray_x = 0;
+//	}
+//
+//	line(framebuf, 0xFF, 0x00, 0xFF, player_x, player_y, ray_x, ray_y);
+
+
+
+	//printf("x_nearest, y_nearest: (%d, %d)\r\n", x_nearest, y_nearest);
+	//printf("grid_col, grid_row: (%d, %d)\r\n", grid.col, grid.row);
+}
