@@ -1,0 +1,6 @@
+src/solver.o src/solver.o: ../src/solver.c ../src/solver.h \
+ ../src/labyrinth.h
+
+../src/solver.h:
+
+../src/labyrinth.h:

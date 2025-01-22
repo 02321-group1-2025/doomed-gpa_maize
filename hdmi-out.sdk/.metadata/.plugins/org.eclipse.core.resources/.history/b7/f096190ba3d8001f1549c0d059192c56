@@ -1,0 +1,3 @@
+src/draw.o src/draw.o: ../src/draw.c ../src/display.h
+
+../src/display.h:

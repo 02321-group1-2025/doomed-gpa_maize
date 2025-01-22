@@ -14,6 +14,7 @@ typedef struct Player {
 	uint32_t vx;
 	uint32_t vy;
 	uint32_t size;
+	bool collision;
 
 	float angle; // Radians
 
@@ -21,9 +22,9 @@ typedef struct Player {
 } player_t;
 
 
-void player_move(player_t *player, char user_input, maze_t *maze);
+void player_move(player_t *player, char user_input, maze_t *maze, uint16_t end_x, uint16_t end_y);
 void player_draw(player_t *player, uint8_t *framebuf);
-bool player_collision(player_t *player, maze_t *maze);
+bool player_collision(player_t *player, maze_t *maze, uint16_t end_x, uint16_t end_y);
 grid_t player_grid_position(player_t *player, maze_t *maze);
 
 #endif

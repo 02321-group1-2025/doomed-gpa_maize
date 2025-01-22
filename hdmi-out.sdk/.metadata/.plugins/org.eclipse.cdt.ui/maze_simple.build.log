@@ -1,0 +1,27 @@
+11:39:39 **** Incremental Build of configuration Release for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 112020	   2728	3737216	3851964	 3ac6bc	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+
+11:39:40 Build Finished (took 953ms)
+

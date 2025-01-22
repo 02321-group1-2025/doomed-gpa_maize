@@ -1,4 +1,8 @@
+11:10:28 **** Incremental Build of configuration Debug for project displaydemo ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
 
-**** Build of configuration Debug for project displaydemo ****
+11:10:28 Build Finished (took 667ms)
 
-Nothing to build for project displaydemo

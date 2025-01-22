@@ -1,0 +1,3 @@
+src/labyrinth.o src/labyrinth.o: ../src/labyrinth.c ../src/labyrinth.h
+
+../src/labyrinth.h:

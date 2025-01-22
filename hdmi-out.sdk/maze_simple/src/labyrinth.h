@@ -47,22 +47,25 @@ uint8_t labyrinthTest (maze_t* maze, uint16_t endX, uint16_t endY);
 */
 maze_t* BuildMaze (uint16_t width, uint16_t height, uint8_t density, uint8_t scramble, uint16_t startX, uint16_t startY);
 
+int setPath (maze_t* maze, uint16_t x, uint16_t y, uint8_t path);
+
 /**
- * gives direct acces to a point in the maze
+ * gives direct access to a point in the maze
  */
 
+#define isValid(maze,x,y)  (x < maze->width && y < maze->height && x >= 0 && y >= 0)
 #define mazeArray(maze,x,y) maze->data [y * maze->width + x]
 
-#define makeColor(red,green,blue) (red&0b11111)<<10 | (green&0b11111)<<5 | (blue&0b11111)<<0;
-#define setColor(maze,x,y,color) mazeArray(maze,x,y) |= (color & 0x7FFF);
-#define setColors(maze,x,y,red,green,blue) mazeArray(maze,x,y) = (red&0b11111)<<10 | (green&0b11111)<<5 | (blue&0b11111)<<0;
-#define setRed(maze,x,y,red)     mazeArray(maze,x,y) & (~(0b11111 << 10)) |= (red&0b11111)<<10;
-#define setGreen(maze,x,y,green) mazeArray(maze,x,y) & (~(0b11111 <<  5)) |= (red&0b11111)<< 5;
-#define setBlue(maze,x,y,blue)   mazeArray(maze,x,y) & (~(0b11111 <<  0)) |= (red&0b11111)<< 0;
+#define makeColor(red,green,blue) ((red&0b11111)<<10 | (green&0b11111)<<5 | (blue&0b11111)<<0)
+#define setColor(maze,x,y,color) (isValid(maze,x,y) ? mazeArray(maze,x,y) = (color & 0x7FFF) | (mazeArray(maze,x,y) & 0b1<<15) : 0)
+#define setColors(maze,x,y,red,green,blue) (isValid(maze,x,y) ? mazeArray(maze,x,y) = (red&0b11111)<<10 | (green&0b11111)<<5 | (blue&0b11111)<<0:0)
+#define setRed(maze,x,y,red)     mazeArray(maze,x,y) & (~(0b11111 << 10)) |= (red&0b11111)<<10
+#define setGreen(maze,x,y,green) mazeArray(maze,x,y) & (~(0b11111 <<  5)) |= (red&0b11111)<< 5
+#define setBlue(maze,x,y,blue)   mazeArray(maze,x,y) & (~(0b11111 <<  0)) |= (red&0b11111)<< 0
 
-#define getColor(maze,x,y) mazeArray(maze,x,y) & 0x7FFF;
-#define getRed(color)      (color>>10)&0b11111;
-#define getGreen(color)     (color>>5)&0b111111;
-#define getBlue(color)           color&0b11111;
+#define getColor(maze,x,y) (isValid(maze,x,y) ? mazeArray(maze,x,y) & 0x7FFF : 0xFFFF)
+#define getRed(color)      ((color>>10)&0b11111)
+#define getGreen(color)     ((color>>5)&0b11111)
+#define getBlue(color)           (color&0b11111)
 
 #endif

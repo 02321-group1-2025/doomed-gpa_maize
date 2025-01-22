@@ -16,6 +16,7 @@
 #include "display.h"
 
 #include "labyrinth.h"
+#include "solver.h"
 
 #define printf xil_printf
 
@@ -29,7 +30,9 @@ XAxiVdma vdma; // Video DMA instance
 u8 frame_buf[NUM_FRAMES][FRAME_SIZE] __attribute__((aligned(32))); // Single frame buffer
 u8 *frame_ptr[NUM_FRAMES];
 u8 maze_buf[FRAME_SIZE] __attribute__((aligned(32)));
-
+uint16_t* showHint(maze_t* maze, point_t* hint, uint8_t* delay);
+point_t* generateHint(maze_t* maze, uint16_t playerX, uint16_t playerY, uint16_t endX, uint16_t endY, uint8_t quick);
+void resetHint(maze_t* maze, uint8_t* delay, uint16_t* old);
 extern XScuTimer TimerInstance;
 
 int
@@ -67,26 +70,49 @@ main(void)
     const u32 timer_count = (TIMER_FREQ_HZ / 1000000) * target_frame_time;
 
     player_t player = {
-    		.x = 16,
-			.y = 12,
-			.angle = M_PI/2,
+       		.x = 16,
+    		.y = 12,
+    		.angle = M_PI/2,
 
-			.vx = 2,
-			.vy = 2,
+    		.vx = 2,
+    		.vy = 2,
 
-			.size = 10,
+    		.collision = true,
+
+    		.size = 10,
     };
+    uint16_t frameCounter = 0;
+    uint32_t rng_seed = 1;
+	uint16_t end_x = 19, end_y = 19;
 
+    //uint8_t delay = 0;
+    //uint16_t* hintBuffer = 0;
     maze_t *maze = NULL;
     uint8_t result = 0;
     do{
-    	if(maze != NULL){
-    		free(maze->data);
-    		free(maze);
-    	}
-    	maze = BuildMaze (20, 20, 0, 100, 0, 0);
-    	result = labyrinthTest(maze,19,19);
+       	rng_seed += 1;
+       	srand(rng_seed);
+       	if(maze != NULL){
+       		free(maze->data);
+       		free(maze);
+       	}
+       	maze = BuildMaze (20, 20, 0, 100, 0, 0);
+       	result = labyrinthTest(maze,end_x,end_y);
     }while(result != 0 && result != 0b100);
+
+    for (int i = 0; i < maze->width; i++) {
+       	for (int j = 0; j < maze->height; j++) {
+       		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
+       	}
+    }
+
+    // Set end square to red
+    uint16_t color = makeColor(0xFF,0x00,0x00);
+    setColor(maze, end_x, end_y, color);
+
+    // Set end to a path
+    setPath(maze, end_x, end_y, 0);
+
     generate_maze_buffer(maze, maze_buf);
 
     /* Flush UART FIFO */
@@ -123,6 +149,14 @@ main(void)
 		if (user_input == 'm' || user_input == 'M') {
 			map_toggle = !map_toggle;
 		}
+		if (user_input == 'c' || user_input == 'C') {
+			player.collision = !player.collision;
+		}
+		/*if(user_input == 'h' || user_input == 'H'){
+			grid_t temp = player_grid_position(&player, maze);
+			point_t* hint = generateHint(maze, temp.col, temp.row, end_x, end_y, 0);
+			hintBuffer = showHint(maze,hint,&delay);
+		}*/
 
 		// Clear frame pointer
 		memset(cur_frame_ptr, 0, FRAME_SIZE);
@@ -153,7 +187,7 @@ main(void)
 			ray_casting(cur_frame_ptr, &player, maze);
 		}
 
-		player_move(&player, user_input, maze);
+		player_move(&player, user_input, maze,end_x,end_y);
 		//player_collision(&player, maze);
 
 
@@ -179,6 +213,49 @@ main(void)
 
 		    //while (XScuTimer_GetCounterValue(&TimerInstance)) {}
 		}
+		//resetHint(maze,&delay,hintBuffer);
+
+
+		frameCounter++;
+		//in case of winning
+		grid_t position = player_grid_position(&player, maze);
+		if(position.col == end_x && position.row == end_y){
+//FIXME score code
+			if(end_x != 0){
+				end_x = 0;
+				end_y = 0;
+			}else{
+				end_x = 19;
+				end_y = 19;
+			}
+			rng_seed += frameCounter;
+			frameCounter = 0;
+			do{
+				rng_seed += 1;
+				srand(rng_seed);
+				if(maze != NULL){
+					free(maze->data);
+					free(maze);
+				}
+				maze = BuildMaze (20, 20, 0, 100, rand() % 20, rand() % 20);
+				result = labyrinthTest(maze,end_x,end_y);
+			}while(result != 0 && result != 0b100);
+			for (int i = 0; i < maze->width; i++) {
+			       	for (int j = 0; j < maze->height; j++) {
+			       		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
+			       	}
+			    }
+
+			    // Set end square to red
+			    uint16_t color = makeColor(0xFF,0x00,0x00);
+			    setColor(maze, end_x, end_y, color);
+
+			    // Set end to a path
+			    setPath(maze, end_x, end_y, 0);
+
+			    generate_maze_buffer(maze, maze_buf);
+		}
+
 		while (XScuTimer_GetCounterValue(&TimerInstance)) {}
 
 		printf("\033[2J"); // Clear screen
@@ -294,11 +371,17 @@ generate_maze_buffer(maze_t *maze, uint8_t *maze_buf) {
             int x = col * CELL_WIDTH;
             int y = row * CELL_HEIGHT;
 
+            uint16_t grid_color = getColor(maze, col, row);
+            uint8_t grid_r = (getRed(grid_color)*255)/31;
+            uint8_t grid_g = (getGreen(grid_color)*255)/31;
+            uint8_t grid_b = (getBlue(grid_color)*255)/31;
+
+
             int path_debug = isPath(maze, col, row);
 
             if (!path_debug) {
-                // Draw wall in white
-                rect(maze_buf, 0xFF, 0xFF, 0xFF, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
+                // Draw wall
+                rect(maze_buf, grid_r, grid_g, grid_b, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
             } else {
                 // Draw path in dark gray
                 rect(maze_buf, 0x20, 0x20, 0x20, x, y, CELL_WIDTH, CELL_HEIGHT, 1);
@@ -312,57 +395,15 @@ generate_maze_buffer(maze_t *maze, uint8_t *maze_buf) {
 
 void
 ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
-
-    const float FOV = (120 * 2 * M_PI)/360;  // 90 degrees FOV
+    const float FOV = (90 * 2 * M_PI)/360;
     const int NUM_RAYS = DISPLAY_WIDTH;  // One ray per vertical screen column
     const float ANGLE_STEP = FOV / NUM_RAYS;  // Angle between rays
 
     float start_angle = player->angle - FOV/2;
 
-//    for(int i = 0; i < NUM_RAYS; i++) {
-//    	float ray_angle = start_angle + (i * ANGLE_STEP);
-//
-//		// Normalize angle just in case
-//		while(ray_angle < 0) ray_angle += 2*M_PI;
-//		while(ray_angle >= 2*M_PI) ray_angle -= 2*M_PI;
-//
-//		float ray_x = player->x;
-//		float ray_y = player->y;
-//		float x_step = cosf(ray_angle);
-//		float y_step = sinf(ray_angle);
-//
-//		// Step size for more precise collision detection
-//		const float STEP_SIZE = 1.0f;
-//		x_step *= STEP_SIZE;
-//		y_step *= STEP_SIZE;
-//
-//		int dof = 0;
-//		const int MAX_DEPTH = MAZE_SIZE * GRID_INTERVAL_X; // Maximum ray length
-//
-//		// Cast the ray
-//		while(dof < MAX_DEPTH) {
-//			int map_x = ray_x / GRID_INTERVAL_X;
-//			int map_y = ray_y / GRID_INTERVAL_Y;
-//
-//			// Check bounds and wall collision
-//			if(map_x < 0 || map_x >= MAZE_SIZE ||
-//			   map_y < 0 || map_y >= MAZE_SIZE ||
-//			   MAZE_CELL(maze, map_x, map_y) == 1) {
-//				break;
-//			}
-//
-//			ray_x += x_step;
-//			ray_y += y_step;
-//			dof += STEP_SIZE;
-//		}
-//
-//		float ray_length = sqrtf(ray_x * ray_x + ray_y * ray_y);
-//    }
     const float STEP_SIZE = 1.0f;
     const int MAX_DEPTH = (maze->width > maze->height ? maze->width : maze->height) * GRID_INTERVAL_X; // Maximum ray length
-    const int WALL_SCALE = DISPLAY_HEIGHT / 16;
-
-
+    const int WALL_SCALE = DISPLAY_HEIGHT / 32;
 
     // Cast rays across the FOV
 	for(int i = 0; i < NUM_RAYS; i++) {
@@ -377,16 +418,43 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 		float x_step = cosf(ray_angle) * STEP_SIZE;
 		float y_step = sinf(ray_angle) * STEP_SIZE;
 
+		int map_x = ray_x / GRID_INTERVAL_X;
+		int map_y = ray_y / GRID_INTERVAL_Y;
+
+		int prev_map_x = ray_x / GRID_INTERVAL_X;
+		int prev_map_y = ray_y / GRID_INTERVAL_Y;
+		bool is_vertical_edge = false;
+		bool is_horizontal_edge = false;
+
 		int dof = 0;
 		while(dof < MAX_DEPTH) {
-			int map_x = ray_x / GRID_INTERVAL_X;
-			int map_y = ray_y / GRID_INTERVAL_Y;
+			map_x = ray_x / GRID_INTERVAL_X;
+			map_y = ray_y / GRID_INTERVAL_Y;
+
+            // Detect cell transitions
+            if (map_x != prev_map_x) {
+                // Check if this vertical edge is between wall and space
+                if (!isPath(maze, map_x, map_y) != !isPath(maze, prev_map_x, map_y)) {
+                    is_vertical_edge = true;
+                    break;
+                }
+            }
+            if (map_y != prev_map_y) {
+                // Check if this horizontal edge is between wall and space
+                if (!isPath(maze, map_x, map_y) != !isPath(maze, map_x, prev_map_y)) {
+                    is_horizontal_edge = true;
+                    break;
+                }
+            }
+
 
 			// Check bounds and wall collision
 			if(!isPath(maze,(int)map_x,(int)map_y)) {
 				break;
 			}
 
+			prev_map_x = map_x;
+			prev_map_y = map_y;
 			ray_x += x_step;
 			ray_y += y_step;
 			dof += STEP_SIZE;
@@ -397,7 +465,7 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 							   (ray_y - player->y) * (ray_y - player->y));
 
 		// Apply fisheye correction
-		float corrected_distance = 0.5f * distance * cosf(ray_angle - player->angle);
+		float corrected_distance = 0.4f * distance * cosf(ray_angle - player->angle);
 
 		// Calculate wall height (inversely proportional to distance)
 		int wall_height = (DISPLAY_HEIGHT / corrected_distance) * WALL_SCALE;
@@ -406,13 +474,31 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 		int wall_top = (DISPLAY_HEIGHT - wall_height) / 2;
 		int wall_bottom = wall_top + wall_height;
 
+		// Make sure not to make a line that is out of bounds of frame buffer
 		if (wall_top < 0) wall_top = 0;
 		if (wall_bottom > DISPLAY_HEIGHT-1) wall_bottom = DISPLAY_HEIGHT-1;
 
 		// Draw vertical line for this ray
-		uint8_t wall_r = 0xFF;
-		uint8_t wall_g = 0xFF;
-		uint8_t wall_b = 0xFF;
+		//uint8_t wall_r = 0xFF;
+		//uint8_t wall_g = 0xFF;
+		//uint8_t wall_b = 0xFF;
+
+		uint16_t maze_shit_color = getColor(maze, map_x, map_y);
+		uint8_t wall_r = (getRed(maze_shit_color) * 255) / 31;
+		uint8_t wall_g = (getGreen(maze_shit_color) * 255) / 31;
+		uint8_t wall_b = (getBlue(maze_shit_color)  * 255) / 31;
+
+		if (is_vertical_edge) {
+			// Vertical edges appear darker
+			wall_r *= 0.7f;
+			wall_g *= 0.7f;
+			wall_b *= 0.7f;
+		} else if (is_horizontal_edge) {
+			// Horizontal edges appear lighter
+			wall_r *= 0.9f;
+			wall_g *= 0.9f;
+			wall_b *= 0.9f;
+		}
 
 		// Add distance-based darkening
 		float distance_factor = 1.0f - (distance / MAX_DEPTH);
@@ -420,92 +506,52 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 		wall_g = (uint8_t)(wall_g * distance_factor);
 		wall_b = (uint8_t)(wall_b * distance_factor);
 
-		line(framebuf, wall_r, wall_g, wall_b,  // White color - adjust as needed
-		      i, wall_top,                  // Start point (x, y)
-		      i, wall_bottom);              // End point (x, same x, different y)
+		line(framebuf,
+			 wall_r, wall_g, wall_b,
+		     i, wall_top,                  // Start point (x, y)
+		     i, wall_bottom);              // End point (x, same x, different y)
+
+		POINT(framebuf,
+			  wall_r*0.8f, wall_g*0.8f, wall_b*0.8f,
+			  i, wall_top);
+		POINT(framebuf,
+			  wall_r*0.8f, wall_g*0.8f, wall_b*0.8f,
+			  i, wall_bottom);
 	}
+}
 
 
+point_t* generateHint(maze_t* maze, uint16_t playerX, uint16_t playerY, uint16_t endX, uint16_t endY, uint8_t quick){
+	maze->startX = playerX;
+	maze->startY = playerX;
+	return solve(maze,endX,endY,quick);
+}
 
-    // Draw the ray
-    //line(framebuf, 0xFF, 0x00, 0xFF, player->x, player->y, ray_x, ray_y);
-
-//	int cellsize_x = GRID_INTERVAL_X;
-//	int cellsize_y = GRID_INTERVAL_Y;
-//
-//	float ray_angle = player->angle;
-//
-//	// Normalize angle just in case
-//	while(ray_angle < 0) ray_angle += 2*M_PI;
-//	while(ray_angle >= 2*M_PI) ray_angle -= 2*M_PI;
-//
-//	int ys, xs, yn, xn;
-//	float tan_angle = tanf(player->angle);
-//	float atan = -1/tanf(ray_angle);
-//	int player_x = player->x;
-//	int player_y = player->y;
-//
-//	// Horizontal
-//	ys = cellsize_y;
-//	xs = ys / tan_angle;
-//	yn = player->y - (player->y / cellsize_y) * cellsize_y;
-//	xn = yn / tan_angle;
-//
-//	// Vertical
-//	xs = cellsize_x;
-//	ys = xs / tan_angle;
-//	xn = player->x - (player->x / cellsize_x) * cellsize_x;
-//	yn = xn * tan_angle;
-//
-//	int dof = 0;
-//	float ray_x, ray_y;
-//	int y_offset, x_offset;
-//	int map_x, map_y, maze_index;
-//
-//	if (ray_angle > M_PI) { // Looking up
-//		ray_y = player_y - 0.00001;
-//		ray_x = (player_x - ray_y) * atan + player_x;
-//		y_offset = -GRID_INTERVAL_Y;
-//		x_offset = -y_offset * atan;
-//	}
-//	if (ray_angle < M_PI) { // Looking down
-//		ray_y = player_y + GRID_INTERVAL_Y;
-//		ray_x = (player_x - ray_y) * atan + player_x;
-//		y_offset = GRID_INTERVAL_Y;
-//		x_offset = -y_offset * atan;
-//	}
-//
-//	if (ray_angle == 0 || ray_angle == M_PI) {
-//		ray_x = player_x;
-//		ray_y = player_y;
-//		dof = MAZE_SIZE;
-//	}
-//
-//	while (dof < MAZE_SIZE) {
-//		map_x = ray_x / GRID_INTERVAL_X;
-//		map_y = ray_y / GRID_INTERVAL_Y;
-//
-//		if (MAZE_CELL(maze, map_x, map_y) == 1) { // Hit a wall
-//			dof = MAZE_SIZE;
-//		}
-//		else {
-//			ray_x += x_offset;
-//			ray_y += y_offset;
-//			dof += 1;
-//		}
-//	}
-//
-//	if (ray_y < 0) {
-//		ray_y = 0;
-//	}
-//	if (ray_x < 0) {
-//		ray_x = 0;
-//	}
-//
-//	line(framebuf, 0xFF, 0x00, 0xFF, player_x, player_y, ray_x, ray_y);
-
-
-
-	//printf("x_nearest, y_nearest: (%d, %d)\r\n", x_nearest, y_nearest);
-	//printf("grid_col, grid_row: (%d, %d)\r\n", grid.col, grid.row);
+uint16_t* showHint(maze_t* maze, point_t* hint, uint8_t* delay){
+	uint16_t* old = maze->data;
+	uint16_t* new = malloc(maze->width * maze->height * sizeof(uint16_t));
+	if(new == NULL){
+		return NULL;
+	}
+	memcpy(new,old,maze->width * maze->height * sizeof(uint16_t));
+	*delay = 16;
+	uint16_t color = makeColor(0xFF,0x06,0x06);
+	point_t* temp = hint;
+	while(temp != NULL){
+		setColor(maze,temp->X+1,temp->Y  ,color);
+		setColor(maze,temp->X-1,temp->Y  ,color);
+		setColor(maze,temp->X  ,temp->Y+1,color);
+		setColor(maze,temp->X  ,temp->Y-1,color);
+		temp = temp->recursivePoint;
+	}
+	return new;
+}
+void resetHint(maze_t* maze, uint8_t* delay, uint16_t* old){
+	if(delay == NULL || old == NULL) return;
+	if(*delay == 0){
+		free(maze->data);
+		maze->data = old;
+	}else{
+		*delay = *delay-1;
+	}
 }

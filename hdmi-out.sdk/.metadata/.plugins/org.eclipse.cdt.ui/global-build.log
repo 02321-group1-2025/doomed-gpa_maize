@@ -1,8 +1,1619 @@
-
-**** Build of configuration Debug for project displaydemo ****
-
-Nothing to build for project displaydemo
-
-**** Build of configuration Debug for project displaydemo ****
-
-Nothing to build for project displaydemo
+10:43:23 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:43:42 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:47:58 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:48:58 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:52:44 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:53:55 **** Clean-only build of configuration Debug for project maze_simple ****
+make clean 
+rm -rf  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o  ./src/timer_ps/timer_ps.d  ./src/dynclk/dynclk.d  ./src/display_ctrl/display_ctrl.d  ./src/draw.d ./src/labyrinth.d ./src/main.d ./src/player.d ./src/solver.d  maze_simple.elf.size  maze_simple.elf
+' '
+10:53:56 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/timer_ps/timer_ps.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/timer_ps/timer_ps.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/timer_ps/timer_ps.d" -MT"src/timer_ps/timer_ps.o" -o "src/timer_ps/timer_ps.o" "../src/timer_ps/timer_ps.c"
+'Finished building: ../src/timer_ps/timer_ps.c'
+' '
+'Building file: ../src/dynclk/dynclk.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dynclk/dynclk.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/dynclk/dynclk.d" -MT"src/dynclk/dynclk.o" -o "src/dynclk/dynclk.o" "../src/dynclk/dynclk.c"
+'Finished building: ../src/dynclk/dynclk.c'
+' '
+'Building file: ../src/display_ctrl/display_ctrl.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/display_ctrl/display_ctrl.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/display_ctrl/display_ctrl.d" -MT"src/display_ctrl/display_ctrl.o" -o "src/display_ctrl/display_ctrl.o" "../src/display_ctrl/display_ctrl.c"
+'Finished building: ../src/display_ctrl/display_ctrl.c'
+' '
+'Building file: ../src/draw.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/draw.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/draw.d" -MT"src/draw.o" -o "src/draw.o" "../src/draw.c"
+'Finished building: ../src/draw.c'
+' '
+'Building file: ../src/labyrinth.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/labyrinth.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/labyrinth.d" -MT"src/labyrinth.o" -o "src/labyrinth.o" "../src/labyrinth.c"
+'Finished building: ../src/labyrinth.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building file: ../src/solver.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/solver.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/solver.d" -MT"src/solver.o" -o "src/solver.o" "../src/solver.c"
+'Finished building: ../src/solver.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+10:54:04 **** Clean-only build of configuration Debug for project maze_simple ****
+make clean 
+rm -rf  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o  ./src/timer_ps/timer_ps.d  ./src/dynclk/dynclk.d  ./src/display_ctrl/display_ctrl.d  ./src/draw.d ./src/labyrinth.d ./src/main.d ./src/player.d ./src/solver.d  maze_simple.elf.size  maze_simple.elf
+' '
+10:54:05 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/timer_ps/timer_ps.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/timer_ps/timer_ps.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/timer_ps/timer_ps.d" -MT"src/timer_ps/timer_ps.o" -o "src/timer_ps/timer_ps.o" "../src/timer_ps/timer_ps.c"
+'Finished building: ../src/timer_ps/timer_ps.c'
+' '
+'Building file: ../src/dynclk/dynclk.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dynclk/dynclk.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/dynclk/dynclk.d" -MT"src/dynclk/dynclk.o" -o "src/dynclk/dynclk.o" "../src/dynclk/dynclk.c"
+'Finished building: ../src/dynclk/dynclk.c'
+' '
+'Building file: ../src/display_ctrl/display_ctrl.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/display_ctrl/display_ctrl.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/display_ctrl/display_ctrl.d" -MT"src/display_ctrl/display_ctrl.o" -o "src/display_ctrl/display_ctrl.o" "../src/display_ctrl/display_ctrl.c"
+'Finished building: ../src/display_ctrl/display_ctrl.c'
+' '
+'Building file: ../src/draw.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/draw.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/draw.d" -MT"src/draw.o" -o "src/draw.o" "../src/draw.c"
+'Finished building: ../src/draw.c'
+' '
+'Building file: ../src/labyrinth.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/labyrinth.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/labyrinth.d" -MT"src/labyrinth.o" -o "src/labyrinth.o" "../src/labyrinth.c"
+'Finished building: ../src/labyrinth.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building file: ../src/solver.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/solver.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/solver.d" -MT"src/solver.o" -o "src/solver.o" "../src/solver.c"
+'Finished building: ../src/solver.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+10:54:41 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:55:53 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+10:58:37 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:00:55 **** Auto Build of project maze_simple_bsp ****
+make -k all 
+"Running Make include in ps7_cortexa9_0/libsrc/axivdma_v6_5/src"
+make -C ps7_cortexa9_0/libsrc/axivdma_v6_5/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_4/src"
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_4/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_6/src"
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_6/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/ddrps_v1_0/src"
+make -C ps7_cortexa9_0/libsrc/ddrps_v1_0/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/devcfg_v3_5/src"
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_5/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/dmaps_v2_3/src"
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_3/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/emacps_v3_7/src"
+make -C ps7_cortexa9_0/libsrc/emacps_v3_7/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/gpio_v4_3/src"
+make -C ps7_cortexa9_0/libsrc/gpio_v4_3/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/gpiops_v3_3/src"
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_3/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/iicps_v3_7/src"
+make -C ps7_cortexa9_0/libsrc/iicps_v3_7/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/qspips_v3_4/src"
+make -C ps7_cortexa9_0/libsrc/qspips_v3_4/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/scugic_v3_9/src"
+make -C ps7_cortexa9_0/libsrc/scugic_v3_9/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/scutimer_v2_1/src"
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src"
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/sdps_v3_5/src"
+make -C ps7_cortexa9_0/libsrc/sdps_v3_5/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/standalone_v6_7/src"
+make -C ps7_cortexa9_0/libsrc/standalone_v6_7/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/ttcps_v3_6/src"
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_6/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/uartps_v3_6/src"
+make -C ps7_cortexa9_0/libsrc/uartps_v3_6/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/usbps_v2_4/src"
+make -C ps7_cortexa9_0/libsrc/usbps_v2_4/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/vtc_v7_2/src"
+make -C ps7_cortexa9_0/libsrc/vtc_v7_2/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make include in ps7_cortexa9_0/libsrc/xadcps_v2_2/src"
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s include  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Running Make libs in ps7_cortexa9_0/libsrc/axivdma_v6_5/src"
+make -C ps7_cortexa9_0/libsrc/axivdma_v6_5/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling axivdma"
+arm-none-eabi-ar: creating ../../../lib/libxil.a
+"Running Make libs in ps7_cortexa9_0/libsrc/coresightps_dcc_v1_4/src"
+make -C ps7_cortexa9_0/libsrc/coresightps_dcc_v1_4/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling coresightps_dcc"
+"Running Make libs in ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_6/src"
+make -C ps7_cortexa9_0/libsrc/cpu_cortexa9_v2_6/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling cpu_cortexa9"
+"Running Make libs in ps7_cortexa9_0/libsrc/ddrps_v1_0/src"
+make -C ps7_cortexa9_0/libsrc/ddrps_v1_0/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling ddrps"
+"Running Make libs in ps7_cortexa9_0/libsrc/devcfg_v3_5/src"
+make -C ps7_cortexa9_0/libsrc/devcfg_v3_5/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling devcfg"
+"Running Make libs in ps7_cortexa9_0/libsrc/dmaps_v2_3/src"
+make -C ps7_cortexa9_0/libsrc/dmaps_v2_3/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling dmaps"
+"Running Make libs in ps7_cortexa9_0/libsrc/emacps_v3_7/src"
+make -C ps7_cortexa9_0/libsrc/emacps_v3_7/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling emacps"
+"Running Make libs in ps7_cortexa9_0/libsrc/gpio_v4_3/src"
+make -C ps7_cortexa9_0/libsrc/gpio_v4_3/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling gpio"
+"Running Make libs in ps7_cortexa9_0/libsrc/gpiops_v3_3/src"
+make -C ps7_cortexa9_0/libsrc/gpiops_v3_3/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling gpiops"
+"Running Make libs in ps7_cortexa9_0/libsrc/iicps_v3_7/src"
+make -C ps7_cortexa9_0/libsrc/iicps_v3_7/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling iicps"
+"Running Make libs in ps7_cortexa9_0/libsrc/qspips_v3_4/src"
+make -C ps7_cortexa9_0/libsrc/qspips_v3_4/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling qspips"
+"Running Make libs in ps7_cortexa9_0/libsrc/scugic_v3_9/src"
+make -C ps7_cortexa9_0/libsrc/scugic_v3_9/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling scugic"
+"Running Make libs in ps7_cortexa9_0/libsrc/scutimer_v2_1/src"
+make -C ps7_cortexa9_0/libsrc/scutimer_v2_1/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling scutimer"
+"Running Make libs in ps7_cortexa9_0/libsrc/scuwdt_v2_1/src"
+make -C ps7_cortexa9_0/libsrc/scuwdt_v2_1/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling scuwdt"
+"Running Make libs in ps7_cortexa9_0/libsrc/sdps_v3_5/src"
+make -C ps7_cortexa9_0/libsrc/sdps_v3_5/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling sdps"
+"Running Make libs in ps7_cortexa9_0/libsrc/standalone_v6_7/src"
+make -C ps7_cortexa9_0/libsrc/standalone_v6_7/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling standalone"
+In file included from sleep.c:57:0:
+xtime_l.h:89:9: note: #pragma message: For the sleep routines, Global timer is being used
+ #pragma message ("For the sleep routines, Global timer is being used")
+         ^~~~~~~
+In file included from usleep.c:60:0:
+xtime_l.h:89:9: note: #pragma message: For the sleep routines, Global timer is being used
+ #pragma message ("For the sleep routines, Global timer is being used")
+         ^~~~~~~
+In file included from xil_sleeptimer.c:55:0:
+xtime_l.h:89:9: note: #pragma message: For the sleep routines, Global timer is being used
+ #pragma message ("For the sleep routines, Global timer is being used")
+         ^~~~~~~
+In file included from xtime_l.c:53:0:
+xtime_l.h:89:9: note: #pragma message: For the sleep routines, Global timer is being used
+ #pragma message ("For the sleep routines, Global timer is being used")
+         ^~~~~~~
+"Running Make libs in ps7_cortexa9_0/libsrc/ttcps_v3_6/src"
+make -C ps7_cortexa9_0/libsrc/ttcps_v3_6/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling ttcps"
+"Running Make libs in ps7_cortexa9_0/libsrc/uartps_v3_6/src"
+make -C ps7_cortexa9_0/libsrc/uartps_v3_6/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling uartps"
+"Running Make libs in ps7_cortexa9_0/libsrc/usbps_v2_4/src"
+make -C ps7_cortexa9_0/libsrc/usbps_v2_4/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling usbps"
+"Running Make libs in ps7_cortexa9_0/libsrc/vtc_v7_2/src"
+make -C ps7_cortexa9_0/libsrc/vtc_v7_2/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling video timing controller"
+"Running Make libs in ps7_cortexa9_0/libsrc/xadcps_v2_2/src"
+make -C ps7_cortexa9_0/libsrc/xadcps_v2_2/src -s libs  "SHELL=CMD" "COMPILER=arm-none-eabi-gcc" "ARCHIVER=arm-none-eabi-ar" "COMPILER_FLAGS=  -O2 -c" "EXTRA_COMPILER_FLAGS=-mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -nostartfiles -g -Wall -Wextra"
+"Compiling xadcps"
+'Finished building libraries'
+11:01:47 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/timer_ps/timer_ps.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/timer_ps/timer_ps.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/timer_ps/timer_ps.d" -MT"src/timer_ps/timer_ps.o" -o "src/timer_ps/timer_ps.o" "../src/timer_ps/timer_ps.c"
+'Finished building: ../src/timer_ps/timer_ps.c'
+' '
+'Building file: ../src/dynclk/dynclk.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dynclk/dynclk.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/dynclk/dynclk.d" -MT"src/dynclk/dynclk.o" -o "src/dynclk/dynclk.o" "../src/dynclk/dynclk.c"
+'Finished building: ../src/dynclk/dynclk.c'
+' '
+'Building file: ../src/display_ctrl/display_ctrl.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/display_ctrl/display_ctrl.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/display_ctrl/display_ctrl.d" -MT"src/display_ctrl/display_ctrl.o" -o "src/display_ctrl/display_ctrl.o" "../src/display_ctrl/display_ctrl.c"
+'Finished building: ../src/display_ctrl/display_ctrl.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:01:52 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:03:04 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:08:23 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:10:28 **** Incremental Build of configuration Debug for project displaydemo ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:10:43 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:11:09 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:12:31 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:14:06 **** Incremental Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+make: Ingenting at gøre for 'main-build'.
+11:18:15 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126488	   2728	3737216	3866432	 3aff40	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:18:32 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:88:15: warning: unused variable 'hintBuffer' [-Wunused-variable]
+     uint16_t* hintBuffer = 0;
+               ^~~~~~~~~~
+../src/main.c:87:13: warning: unused variable 'delay' [-Wunused-variable]
+     uint8_t delay = 0;
+             ^~~~~
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126488	   2728	3737216	3866432	 3aff40	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:18:41 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126488	   2728	3737216	3866432	 3aff40	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:20:36 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:217:3: error: 'seed' undeclared (first use in this function); did you mean 'seed48'?
+   seed = rand();
+   ^~~~
+   seed48
+../src/main.c:217:3: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:20:53 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:217:3: error: 'frameCounter' undeclared (first use in this function); did you mean 'frame_ptr'?
+   frameCounter++;
+   ^~~~~~~~~~~~
+   frame_ptr
+../src/main.c:217:3: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:21:07 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:84:5: error: 'frameCounter' undeclared (first use in this function); did you mean 'frame_ptr'?
+     frameCounter = 0;
+     ^~~~~~~~~~~~
+     frame_ptr
+../src/main.c:84:5: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:21:40 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126488	   2728	3737216	3866432	 3aff40	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:24:14 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:190:3: error: too many arguments to function 'player_move'
+   player_move(&player, user_input, maze,end_x,end_y);
+   ^~~~~~~~~~~
+In file included from ../src/main.c:14:0:
+../src/player.h:25:6: note: declared here
+ void player_move(player_t *player, char user_input, maze_t *maze);
+      ^~~~~~~~~~~
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:24:25 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:190:3: error: too many arguments to function 'player_move'
+   player_move(&player, user_input, maze,end_x,end_y);
+   ^~~~~~~~~~~
+In file included from ../src/main.c:14:0:
+../src/player.h:25:6: note: declared here
+ void player_move(player_t *player, char user_input, maze_t *maze);
+      ^~~~~~~~~~~
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:24:50 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126552	   2728	3737216	3866496	 3aff80	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:24:54 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:92:55: error: 'edn' undeclared (first use in this function)
+  player->grid_pos = player_grid_position(player, maze,edn);
+                                                       ^~~
+../src/player.c:92:55: note: each undeclared identifier is reported only once for each function it appears in
+../src/player.c:92:21: error: too many arguments to function 'player_grid_position'
+  player->grid_pos = player_grid_position(player, maze,edn);
+                     ^~~~~~~~~~~~~~~~~~~~
+In file included from ../src/player.c:4:0:
+../src/player.h:28:8: note: declared here
+ grid_t player_grid_position(player_t *player, maze_t *maze);
+        ^~~~~~~~~~~~~~~~~~~~
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+make: *** [src/player.o] Fejl 1
+11:25:13 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126552	   2728	3737216	3866496	 3aff80	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:25:34 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+../src/player.c: At top level:
+../src/player.c:162:1: error: conflicting types for 'player_collision'
+ player_collision(player_t *player, maze_t *maze, uint16_t end_x, uint16_t end_y) {
+ ^~~~~~~~~~~~~~~~
+In file included from ../src/player.c:4:0:
+../src/player.h:27:6: note: previous declaration of 'player_collision' was here
+ bool player_collision(player_t *player, maze_t *maze);
+      ^~~~~~~~~~~~~~~~
+../src/player.c: In function 'player_collision':
+../src/player.c:167:5: error: expected expression before ')' token
+  if()
+     ^
+make: *** [src/player.o] Fejl 1
+11:25:53 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:95:29: error: too many arguments to function 'player_collision'
+  bool player_does_collide = player_collision(player, maze, end_x, end_y);
+                             ^~~~~~~~~~~~~~~~
+In file included from ../src/player.c:4:0:
+../src/player.h:27:6: note: declared here
+ bool player_collision(player_t *player, maze_t *maze);
+      ^~~~~~~~~~~~~~~~
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+../src/player.c: At top level:
+../src/player.c:162:1: error: conflicting types for 'player_collision'
+ player_collision(player_t *player, maze_t *maze, uint16_t end_x, uint16_t end_y) {
+ ^~~~~~~~~~~~~~~~
+In file included from ../src/player.c:4:0:
+../src/player.h:27:6: note: previous declaration of 'player_collision' was here
+ bool player_collision(player_t *player, maze_t *maze);
+      ^~~~~~~~~~~~~~~~
+../src/player.c: In function 'player_collision':
+../src/player.c:167:5: error: expected expression before ')' token
+  if()
+     ^
+make: *** [src/player.o] Fejl 1
+11:26:16 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+../src/player.c: In function 'player_collision':
+../src/player.c:167:5: error: expected expression before ')' token
+  if()
+     ^
+make: *** [src/player.o] Fejl 1
+11:26:39 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126552	   2728	3737216	3866496	 3aff80	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:26:55 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:27:05 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+../src/player.c: In function 'player_collision':
+../src/player.c:169:2: error: expected ';' before '}' token
+  }
+  ^
+make: *** [src/player.o] Fejl 1
+11:27:06 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+../src/player.c: In function 'player_collision':
+../src/player.c:168:10: error: 'falseK' undeclared (first use in this function); did you mean 'false'?
+   return falseK
+          ^~~~~~
+          false
+../src/player.c:168:10: note: each undeclared identifier is reported only once for each function it appears in
+../src/player.c:169:2: error: expected ';' before '}' token
+  }
+  ^
+make: *** [src/player.o] Fejl 1
+11:27:08 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:27:36 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:28:40 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:28:42 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:28:58 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126616	   2728	3737216	3866560	 3affc0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:29:17 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126680	   2728	3737216	3866624	 3b0000	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:29:23 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126680	   2728	3737216	3866624	 3b0000	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:29:41 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:225:3: error: expected expression before '}' token
+   }
+   ^
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:30:41 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126744	   2728	3737216	3866688	 3b0040	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:31:10 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:231:43: error: invalid operands to binary % (have 'int (*)(void)' and 'int')
+    maze = BuildMaze (20, 20, 0, 100, rand % 20, rand % 20);
+                                      ~~~~ ^
+../src/main.c:231:54: error: invalid operands to binary % (have 'int (*)(void)' and 'int')
+    maze = BuildMaze (20, 20, 0, 100, rand % 20, rand % 20);
+                                                 ~~~~ ^
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:31:32 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:32:26 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:32:39 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:231:16: error: 'frameCount' undeclared (first use in this function); did you mean 'frameCounter'?
+    rng_seed += frameCount
+                ^~~~~~~~~~
+                frameCounter
+../src/main.c:231:16: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:232:4: error: expected ';' before 'do'
+    do{
+    ^~
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:32:41 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:231:16: error: 'frameCount' undeclared (first use in this function); did you mean 'frameCounter'?
+    rng_seed += frameCount;
+                ^~~~~~~~~~
+                frameCounter
+../src/main.c:231:16: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+make: *** [src/main.o] Fejl 1
+11:32:48 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:32:56 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:33:15 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:33:21 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:33:49 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:34:08 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 126872	   2728	3737216	3866816	 3b00c0	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:35:29 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 127000	   2728	3737216	3866944	 3b0140	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:35:48 **** Clean-only build of configuration Debug for project maze_simple ****
+make clean 
+rm -rf  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o  ./src/timer_ps/timer_ps.d  ./src/dynclk/dynclk.d  ./src/display_ctrl/display_ctrl.d  ./src/draw.d ./src/labyrinth.d ./src/main.d ./src/player.d ./src/solver.d  maze_simple.elf.size  maze_simple.elf
+' '
+11:35:48 **** Incremental Build of configuration Release for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/timer_ps/timer_ps.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/timer_ps/timer_ps.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/timer_ps/timer_ps.d" -MT"src/timer_ps/timer_ps.o" -o "src/timer_ps/timer_ps.o" "../src/timer_ps/timer_ps.c"
+'Finished building: ../src/timer_ps/timer_ps.c'
+' '
+'Building file: ../src/dynclk/dynclk.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/dynclk/dynclk.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/dynclk/dynclk.d" -MT"src/dynclk/dynclk.o" -o "src/dynclk/dynclk.o" "../src/dynclk/dynclk.c"
+'Finished building: ../src/dynclk/dynclk.c'
+' '
+'Building file: ../src/display_ctrl/display_ctrl.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/display_ctrl/display_ctrl.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/display_ctrl/display_ctrl.d" -MT"src/display_ctrl/display_ctrl.o" -o "src/display_ctrl/display_ctrl.o" "../src/display_ctrl/display_ctrl.c"
+'Finished building: ../src/display_ctrl/display_ctrl.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 111848	   2728	3737216	3851792	 3ac610	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:39:15 **** Auto Build of configuration Debug for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/timer_ps/timer_ps.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/timer_ps/timer_ps.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/timer_ps/timer_ps.d" -MT"src/timer_ps/timer_ps.o" -o "src/timer_ps/timer_ps.o" "../src/timer_ps/timer_ps.c"
+'Finished building: ../src/timer_ps/timer_ps.c'
+' '
+'Building file: ../src/dynclk/dynclk.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dynclk/dynclk.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/dynclk/dynclk.d" -MT"src/dynclk/dynclk.o" -o "src/dynclk/dynclk.o" "../src/dynclk/dynclk.c"
+'Finished building: ../src/dynclk/dynclk.c'
+' '
+'Building file: ../src/display_ctrl/display_ctrl.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/display_ctrl/display_ctrl.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/display_ctrl/display_ctrl.d" -MT"src/display_ctrl/display_ctrl.o" -o "src/display_ctrl/display_ctrl.o" "../src/display_ctrl/display_ctrl.c"
+'Finished building: ../src/display_ctrl/display_ctrl.c'
+' '
+'Building file: ../src/draw.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/draw.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/draw.d" -MT"src/draw.o" -o "src/draw.o" "../src/draw.c"
+'Finished building: ../src/draw.c'
+' '
+'Building file: ../src/labyrinth.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/labyrinth.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/labyrinth.d" -MT"src/labyrinth.o" -o "src/labyrinth.o" "../src/labyrinth.c"
+'Finished building: ../src/labyrinth.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/player.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/player.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/player.d" -MT"src/player.o" -o "src/player.o" "../src/player.c"
+../src/player.c: In function 'player_cardinal_direction':
+../src/player.c:28:8: warning: unused variable 'quadrant' [-Wunused-variable]
+  float quadrant = (2*M_PI/4);
+        ^~~~~~~~
+../src/player.c: In function 'player_move':
+../src/player.c:45:17: warning: variable 'direction' set but not used [-Wunused-but-set-variable]
+  enum Direction direction;
+                 ^~~~~~~~~
+../src/player.c:43:9: warning: unused variable 'player_grid' [-Wunused-variable]
+  grid_t player_grid = player->grid_pos;
+         ^~~~~~~~~~~
+../src/player.c:38:6: warning: unused variable 'player_size' [-Wunused-variable]
+  int player_size = player->size;
+      ^~~~~~~~~~~
+'Finished building: ../src/player.c'
+' '
+'Building file: ../src/solver.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/solver.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/solver.d" -MT"src/solver.o" -o "src/solver.o" "../src/solver.c"
+'Finished building: ../src/solver.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 127448	   2728	3737216	3867392	 3b0300	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '
+11:39:39 **** Incremental Build of configuration Release for project maze_simple ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../maze_simple_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:45:6: warning: unused variable 'frame' [-Wunused-variable]
+  u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+      ^~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: maze_simple.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../maze_simple_bsp/ps7_cortexa9_0/lib -o "maze_simple.elf"  ./src/timer_ps/timer_ps.o  ./src/dynclk/dynclk.o  ./src/display_ctrl/display_ctrl.o  ./src/draw.o ./src/labyrinth.o ./src/main.o ./src/player.o ./src/solver.o   -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: maze_simple.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size maze_simple.elf  |tee "maze_simple.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 112020	   2728	3737216	3851964	 3ac6bc	maze_simple.elf
+'Finished building: maze_simple.elf.size'
+' '

@@ -1,0 +1,29 @@
+src/player.o src/player.o: ../src/player.c ../src/player.h ../src/grid.h \
+ ../src/display.h ../src/labyrinth.h ../src/draw.h ../src/maze.h \
+ ../../maze_simple_bsp/ps7_cortexa9_0/include/xil_printf.h \
+ ../../maze_simple_bsp/ps7_cortexa9_0/include/xil_types.h \
+ ../../maze_simple_bsp/ps7_cortexa9_0/include/xparameters.h \
+ ../../maze_simple_bsp/ps7_cortexa9_0/include/xparameters_ps.h \
+ ../../maze_simple_bsp/ps7_cortexa9_0/include/bspconfig.h
+
+../src/player.h:
+
+../src/grid.h:
+
+../src/display.h:
+
+../src/labyrinth.h:
+
+../src/draw.h:
+
+../src/maze.h:
+
+../../maze_simple_bsp/ps7_cortexa9_0/include/xil_printf.h:
+
+../../maze_simple_bsp/ps7_cortexa9_0/include/xil_types.h:
+
+../../maze_simple_bsp/ps7_cortexa9_0/include/xparameters.h:
+
+../../maze_simple_bsp/ps7_cortexa9_0/include/xparameters_ps.h:
+
+../../maze_simple_bsp/ps7_cortexa9_0/include/bspconfig.h:
