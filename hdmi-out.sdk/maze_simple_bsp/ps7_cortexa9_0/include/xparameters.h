@@ -27,7 +27,6 @@
 #define PLATFORM_ZYNQ
  
 /* Definitions for sleep timer configuration */
-#define XSLEEP_TIMER_IS_DEFAULT_TIMER
  
  
 /******************************************************************/
@@ -310,13 +309,13 @@
 /******************************************************************/
 
 /* Definitions for driver GPIO */
-#define XPAR_XGPIO_NUM_INSTANCES 4
+#define XPAR_XGPIO_NUM_INSTANCES 5
 
 /* Definitions for peripheral AXI_GPIO_BTN */
 #define XPAR_AXI_GPIO_BTN_BASEADDR 0x41210000
 #define XPAR_AXI_GPIO_BTN_HIGHADDR 0x4121FFFF
 #define XPAR_AXI_GPIO_BTN_DEVICE_ID 0
-#define XPAR_AXI_GPIO_BTN_INTERRUPT_PRESENT 0
+#define XPAR_AXI_GPIO_BTN_INTERRUPT_PRESENT 1
 #define XPAR_AXI_GPIO_BTN_IS_DUAL 0
 
 
@@ -344,13 +343,21 @@
 #define XPAR_AXI_GPIO_SW_IS_DUAL 0
 
 
+/* Definitions for peripheral AXI_GPIO_0 */
+#define XPAR_AXI_GPIO_0_BASEADDR 0x41240000
+#define XPAR_AXI_GPIO_0_HIGHADDR 0x4124FFFF
+#define XPAR_AXI_GPIO_0_DEVICE_ID 4
+#define XPAR_AXI_GPIO_0_INTERRUPT_PRESENT 1
+#define XPAR_AXI_GPIO_0_IS_DUAL 0
+
+
 /******************************************************************/
 
 /* Canonical definitions for peripheral AXI_GPIO_BTN */
 #define XPAR_GPIO_0_BASEADDR 0x41210000
 #define XPAR_GPIO_0_HIGHADDR 0x4121FFFF
 #define XPAR_GPIO_0_DEVICE_ID XPAR_AXI_GPIO_BTN_DEVICE_ID
-#define XPAR_GPIO_0_INTERRUPT_PRESENT 0
+#define XPAR_GPIO_0_INTERRUPT_PRESENT 1
 #define XPAR_GPIO_0_IS_DUAL 0
 
 /* Canonical definitions for peripheral AXI_GPIO_HDMI */
@@ -373,6 +380,13 @@
 #define XPAR_GPIO_3_DEVICE_ID XPAR_AXI_GPIO_SW_DEVICE_ID
 #define XPAR_GPIO_3_INTERRUPT_PRESENT 0
 #define XPAR_GPIO_3_IS_DUAL 0
+
+/* Canonical definitions for peripheral AXI_GPIO_0 */
+#define XPAR_GPIO_4_BASEADDR 0x41240000
+#define XPAR_GPIO_4_HIGHADDR 0x4124FFFF
+#define XPAR_GPIO_4_DEVICE_ID XPAR_AXI_GPIO_0_DEVICE_ID
+#define XPAR_GPIO_4_INTERRUPT_PRESENT 1
+#define XPAR_GPIO_4_IS_DUAL 0
 
 
 /******************************************************************/
@@ -459,6 +473,8 @@
 #define XPAR_FABRIC_AXI_GPIO_HDMI_IP2INTC_IRPT_INTR 61U
 #define XPAR_FABRIC_AXI_VDMA_0_MM2S_INTROUT_INTR 62U
 #define XPAR_FABRIC_V_TC_0_IRQ_INTR 63U
+#define XPAR_FABRIC_AXI_GPIO_BTN_IP2INTC_IRPT_INTR 64U
+#define XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR 65U
 
 /******************************************************************/
 
@@ -466,6 +482,8 @@
 #define XPAR_FABRIC_GPIO_1_VEC_ID XPAR_FABRIC_AXI_GPIO_HDMI_IP2INTC_IRPT_INTR
 #define XPAR_FABRIC_AXIVDMA_0_VEC_ID XPAR_FABRIC_AXI_VDMA_0_MM2S_INTROUT_INTR
 #define XPAR_FABRIC_VTC_0_VEC_ID XPAR_FABRIC_V_TC_0_IRQ_INTR
+#define XPAR_FABRIC_GPIO_0_VEC_ID XPAR_FABRIC_AXI_GPIO_BTN_IP2INTC_IRPT_INTR
+#define XPAR_FABRIC_GPIO_4_VEC_ID XPAR_FABRIC_AXI_GPIO_0_IP2INTC_IRPT_INTR
 
 /******************************************************************/
 

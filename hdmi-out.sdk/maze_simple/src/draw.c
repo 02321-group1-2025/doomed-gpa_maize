@@ -3,8 +3,8 @@
 
 #include "display.h"
 
-void line(uint8_t* frame, uint8_t red, uint8_t green, uint8_t blue, int x0, int y0, int x1, int y1){
-
+void line(uint8_t* frame, uint8_t red, uint8_t green, uint8_t blue, int16_t x0, int16_t y0, int16_t x1, int16_t y1){
+	if(x0 < 0 || y0 < 0 || x1 < 0 || y1 < 0) return;
 	if(x0 == x1){ //vertical linje
 		if(y0 > y1){
 				int temp = y0;

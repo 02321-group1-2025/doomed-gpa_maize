@@ -8,31 +8,50 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "xgpio.h"
+
 #include "main.h"
 #include "xscutimer.h"
 #include "draw.h"
 #include "player.h"
 #include "maze.h"
+#include "solver.h"
 #include "display.h"
+#include "buttons.h"
+#include "qoi.h"
+#include "video_frames.h"
 
 #include "labyrinth.h"
-#include "solver.h"
 
 #define printf xil_printf
 
 #define NUM_FRAMES 2
 
 void ray_casting(u8 *framebuf, player_t *player, maze_t *maze);
+uint16_t* showHint(maze_t* maze, point_t* hint, uint8_t* delay);
+point_t* generateHint(maze_t* maze, uint16_t playerX, uint16_t playerY, uint16_t endX, uint16_t endY, uint8_t quick);
+void resetHint(maze_t* maze, uint8_t* delay, uint16_t* old);
+
 
 /* Global variables */
 DisplayCtrl disp_ctrl; // Display controller instance
 XAxiVdma vdma; // Video DMA instance
-u8 frame_buf[NUM_FRAMES][FRAME_SIZE] __attribute__((aligned(32))); // Single frame buffer
+
 u8 *frame_ptr[NUM_FRAMES];
 u8 maze_buf[FRAME_SIZE] __attribute__((aligned(32)));
-uint16_t* showHint(maze_t* maze, point_t* hint, uint8_t* delay);
-point_t* generateHint(maze_t* maze, uint16_t playerX, uint16_t playerY, uint16_t endX, uint16_t endY, uint8_t quick);
-void resetHint(maze_t* maze, uint8_t* delay, uint16_t* old);
+u8 frame_buf[NUM_FRAMES][FRAME_SIZE] __attribute__((aligned(32))); // Single frame buffer
+const int FPS = 20;
+
+//const float FOV = (90 * 2 * M_PI)/360;
+const float FOV = 0.85f;
+const float fisheye_correction = 1.0f;
+
+//const int WALL_SCALE = DISPLAY_HEIGHT / 32;
+const int WALL_SCALE = 30;
+
+//const float STEP_SIZE = 1.0f;
+const float STEP_SIZE = 1.0f;
+
 extern XScuTimer TimerInstance;
 
 int
@@ -42,7 +61,7 @@ main(void)
     initialize_display();
 
 	int next_frame = 0;
-	u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
+	//u8 *frame = disp_ctrl.framePtr[disp_ctrl.curFrame];
 
 	// Clear the frame buffer
 	//memset(frame_buf, 0, FRAME_SIZE);
@@ -66,61 +85,116 @@ main(void)
 	}
 	Xil_DCacheFlushRange((unsigned int) frame_buf[1], FRAME_SIZE);
 
-    const u32 target_frame_time = 1000000 / 20; // Target 30fps in microseconds
+	/* Flush UART FIFO */
+	while (XUartPs_IsReceiveData(UART_BASEADDR)) {
+		XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
+	}
+
+	char user_input = 0;
+
+    const u32 target_frame_time = 1000000 / FPS; // Target 30fps in microseconds
     const u32 timer_count = (TIMER_FREQ_HZ / 1000000) * target_frame_time;
 
     player_t player = {
-       		.x = 16,
-    		.y = 12,
-    		.angle = M_PI/2,
+    		.x = 16,
+			.y = 12,
+			.angle = M_PI/2,
 
-    		.vx = 2,
-    		.vy = 2,
+			.collision = true,
 
-    		.collision = true,
-
-    		.size = 10,
+			.size = 10,
     };
-    uint16_t frameCounter = 0;
-    uint32_t rng_seed = 1;
-	uint16_t end_x = 19, end_y = 19;
 
-    //uint8_t delay = 0;
-    //uint16_t* hintBuffer = 0;
+    button_state_t button_state = {0};
+    initialize_buttons(&button_state);
+    button_setup_interrupts(&button_state);
+
+	uint32_t rng_seed = 0;
+
+    uint16_t end_x = 19, end_y = 19;
+    uint32_t frameCounter = 0;
+    uint32_t total_time = 0; // Update when player finish
+    uint32_t total_completions = 0;
+    uint32_t lap_time = 0;
     maze_t *maze = NULL;
     uint8_t result = 0;
+    uint16_t color = makeColor(0xFF,0x00,0x00);
+
+
+    const struct Frame* frame = &VideoFrames[0];
+
+    // Decode QOI frame
+	qoi_header_t header = qoi_decode_header(frame->data);
+	RGBa_t *pixels = calloc(sizeof(RGBa_t), header.width * header.height);
+
+	qoi_decode(frame->data, frame->size, pixels, &header);
+reset:
+	// Copy decoded pixels to frame buffer
+	for (int y = 0; y < header.height; y++) {
+		for (int x = 0; x < header.width; x++) {
+			RGBa_t pixel = pixels[y * header.width + x];
+
+			// Calculate base position for the 4x4 block
+			int base_x = (x * 4);
+			int base_y = (y * 4);
+
+			// Draw 4x4 block of pixels
+			for (int dy = 0; dy < 4; dy++) {
+				for (int dx = 0; dx < 4; dx++) {
+					int offset_x = base_x + dx;
+					int offset_y = base_y + dy;
+
+					// Check if we're still within display bounds
+					if (offset_x < DISPLAY_WIDTH && offset_y < DISPLAY_HEIGHT) {
+						FRAME_PIXEL_R(disp_ctrl.framePtr[disp_ctrl.curFrame], offset_x, offset_y) = pixel.red;
+						FRAME_PIXEL_G(disp_ctrl.framePtr[disp_ctrl.curFrame], offset_x, offset_y) = pixel.green;
+						FRAME_PIXEL_B(disp_ctrl.framePtr[disp_ctrl.curFrame], offset_x, offset_y) = pixel.blue;
+						FRAME_PIXEL_A(disp_ctrl.framePtr[disp_ctrl.curFrame], offset_x, offset_y) = 255;
+					}
+				}
+			}
+		}
+	}
+	Xil_DCacheFlushRange((unsigned int) disp_ctrl.framePtr[disp_ctrl.curFrame], FRAME_SIZE);
+
+	while (1) {
+		user_input = 0;
+		if (XUartPs_IsReceiveData(UART_BASEADDR)){
+			user_input = XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
+		}
+		printf("%d\r\n", button_state.btn_val);
+
+		if (user_input != 0) break;
+		if (button_state.btn_val != 0) break;
+
+		rng_seed += 1;
+	}
+
     do{
-       	rng_seed += 1;
-       	srand(rng_seed);
-       	if(maze != NULL){
-       		free(maze->data);
-       		free(maze);
-       	}
-       	maze = BuildMaze (20, 20, 0, 100, 0, 0);
-       	result = labyrinthTest(maze,end_x,end_y);
+    	rng_seed += 1;
+    	srand(rng_seed);
+    	if(maze != NULL){
+    		free(maze->data);
+    		free(maze);
+    	}
+    	maze = BuildMaze (20, 20, 0, 100, 0, 0);
+    	result = labyrinthTest(maze,end_x,end_y);
     }while(result != 0 && result != 0b100);
 
     for (int i = 0; i < maze->width; i++) {
-       	for (int j = 0; j < maze->height; j++) {
-       		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
-       	}
+    	for (int j = 0; j < maze->height; j++) {
+    		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
+    	}
     }
 
     // Set end square to red
-    uint16_t color = makeColor(0xFF,0x00,0x00);
+
     setColor(maze, end_x, end_y, color);
 
     // Set end to a path
     setPath(maze, end_x, end_y, 0);
 
     generate_maze_buffer(maze, maze_buf);
-
-    /* Flush UART FIFO */
-	while (XUartPs_IsReceiveData(UART_BASEADDR)) {
-		XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
-	}
-
-	char user_input = 0;
 
 	bool map_toggle = false;
 
@@ -146,17 +220,29 @@ main(void)
 			user_input = XUartPs_ReadReg(UART_BASEADDR, XUARTPS_FIFO_OFFSET);
 		}
 
-		if (user_input == 'm' || user_input == 'M') {
+		if (user_input == 'm' || user_input == 'M' || button_state.btn_val == BUTTON_HINT) {
 			map_toggle = !map_toggle;
 		}
-		if (user_input == 'c' || user_input == 'C') {
+
+		if (user_input == 'c') {
 			player.collision = !player.collision;
 		}
-		/*if(user_input == 'h' || user_input == 'H'){
-			grid_t temp = player_grid_position(&player, maze);
-			point_t* hint = generateHint(maze, temp.col, temp.row, end_x, end_y, 0);
-			hintBuffer = showHint(maze,hint,&delay);
-		}*/
+
+		if (user_input == 'r' || button_state.btn_val == BUTTON_ESC){
+			free(maze->data);
+			free(maze);
+			end_x = 19, end_y = 19;
+			frameCounter = 0;
+			total_time = 0; // Update when player finish
+			total_completions = 0;
+			lap_time = 0;
+			maze = NULL;
+			result = 0;
+			color = makeColor(0xFF,0x00,0x00);
+			player.x = 16;
+			player.y = 12;
+			goto reset;
+		}
 
 		// Clear frame pointer
 		memset(cur_frame_ptr, 0, FRAME_SIZE);
@@ -165,6 +251,7 @@ main(void)
 			// Draw maze
 			memcpy(cur_frame_ptr, maze_buf, FRAME_SIZE);
 
+			// This can crash the program. w/e
 			player_draw(&player, cur_frame_ptr);
 		}
 		else {
@@ -187,10 +274,54 @@ main(void)
 			ray_casting(cur_frame_ptr, &player, maze);
 		}
 
-		player_move(&player, user_input, maze,end_x,end_y);
-		//player_collision(&player, maze);
+		if (map_toggle == false) { // Only move the player if the map is in 3D
+			player_move(&player, user_input, button_state.btn_val, maze,end_x,end_y);
+		}
 
 
+		frameCounter++;
+		//in case of winning (unlikely)
+		grid_t position = player_grid_position(&player, maze);
+		if(position.col == end_x && position.row == end_y){
+			total_completions += 1;
+			total_time += frameCounter;
+			lap_time = frameCounter;
+
+			if(end_x != 0){
+				end_x = 0;
+				end_y = 0;
+			}else{
+				end_x = 19;
+				end_y = 19;
+			}
+			rng_seed += frameCounter;
+			frameCounter = 0;
+			do{
+				rng_seed += 1;
+				srand(rng_seed);
+				if(maze != NULL){
+					free(maze->data);
+					free(maze);
+				}
+				maze =  BuildMaze (20, 20, 0, 100, rand() % 20, rand() % 20);
+				result = labyrinthTest(maze,end_x,end_y);
+				result |= labyrinthTest(maze,position.col ,position.row);
+			}while(result != 0 && result != 0b100);
+			for (int i = 0; i < maze->width; i++) {
+			       	for (int j = 0; j < maze->height; j++) {
+			       		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
+			       	}
+			    }
+
+			    // Set end square to red
+			    uint16_t color = makeColor(0xFF,0x00,0x00);
+			    setColor(maze, end_x, end_y, color);
+
+			    // Set end to a path
+			    setPath(maze, end_x, end_y, 0);
+
+			    generate_maze_buffer(maze, maze_buf);
+		}
 
 		// Flush cache to ensure the frame buffer is written to memory
 		Xil_DCacheFlushRange((unsigned int) cur_frame_ptr, FRAME_SIZE);
@@ -213,49 +344,6 @@ main(void)
 
 		    //while (XScuTimer_GetCounterValue(&TimerInstance)) {}
 		}
-		//resetHint(maze,&delay,hintBuffer);
-
-
-		frameCounter++;
-		//in case of winning
-		grid_t position = player_grid_position(&player, maze);
-		if(position.col == end_x && position.row == end_y){
-//FIXME score code
-			if(end_x != 0){
-				end_x = 0;
-				end_y = 0;
-			}else{
-				end_x = 19;
-				end_y = 19;
-			}
-			rng_seed += frameCounter;
-			frameCounter = 0;
-			do{
-				rng_seed += 1;
-				srand(rng_seed);
-				if(maze != NULL){
-					free(maze->data);
-					free(maze);
-				}
-				maze = BuildMaze (20, 20, 0, 100, rand() % 20, rand() % 20);
-				result = labyrinthTest(maze,end_x,end_y);
-			}while(result != 0 && result != 0b100);
-			for (int i = 0; i < maze->width; i++) {
-			       	for (int j = 0; j < maze->height; j++) {
-			       		setColor(maze, i, j, makeColor(0xFF, 0xFF, 0xFF));
-			       	}
-			    }
-
-			    // Set end square to red
-			    uint16_t color = makeColor(0xFF,0x00,0x00);
-			    setColor(maze, end_x, end_y, color);
-
-			    // Set end to a path
-			    setPath(maze, end_x, end_y, 0);
-
-			    generate_maze_buffer(maze, maze_buf);
-		}
-
 		while (XScuTimer_GetCounterValue(&TimerInstance)) {}
 
 		printf("\033[2J"); // Clear screen
@@ -263,13 +351,22 @@ main(void)
 		printf("Start time: %d\r\n", start_time);
 		printf("End time: %d\r\n", end_time);
 		printf("Elapsed_us: %d\r\n", elapsed_us);
-		printf("Timer delay: %d\r\n", delay_ticks);
+		printf("Timer delay: %d\r\n\n", delay_ticks);
 
 		//grid_t grid = player_grid_position(&player);
 		printf("Player grid: (%d, %d)\r\n", player.grid_pos.col, player.grid_pos.row);
 		printf("User input: %c\r\n", user_input);
 		printf("Player angle: %f\r\n", player.angle);
 
+		printf("Lap time: %ds\r\n", (int)lap_time / FPS);
+		printf("Completion time: %ds\r\n", (int)total_time / FPS);
+		printf("Total maze completions: %d\r\n\n", total_completions);
+
+		printf("FOV: %d.%03d\r\n", (int)FOV, (int)((FOV - (int)FOV) * 1000));
+		printf("Fisheye correction: %d.%03d\r\n", (int)fisheye_correction, (int)((fisheye_correction - (int)fisheye_correction) * 1000));
+
+		printf("Wall scale: %d\r\n", WALL_SCALE);
+		printf("Step_size: %d.%03d\r\n", (int)STEP_SIZE, (int)((STEP_SIZE - (int)STEP_SIZE) * 1000));
 	}
 }
 
@@ -395,15 +492,15 @@ generate_maze_buffer(maze_t *maze, uint8_t *maze_buf) {
 
 void
 ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
-    const float FOV = (90 * 2 * M_PI)/360;
+
     const int NUM_RAYS = DISPLAY_WIDTH;  // One ray per vertical screen column
     const float ANGLE_STEP = FOV / NUM_RAYS;  // Angle between rays
 
     float start_angle = player->angle - FOV/2;
 
-    const float STEP_SIZE = 1.0f;
-    const int MAX_DEPTH = (maze->width > maze->height ? maze->width : maze->height) * GRID_INTERVAL_X; // Maximum ray length
-    const int WALL_SCALE = DISPLAY_HEIGHT / 32;
+
+    const int MAX_DEPTH = (maze->width > maze->height ? maze->width : maze->height) * (DISPLAY_WIDTH / maze->width); // Maximum ray length
+
 
     // Cast rays across the FOV
 	for(int i = 0; i < NUM_RAYS; i++) {
@@ -418,18 +515,18 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 		float x_step = cosf(ray_angle) * STEP_SIZE;
 		float y_step = sinf(ray_angle) * STEP_SIZE;
 
-		int map_x = ray_x / GRID_INTERVAL_X;
-		int map_y = ray_y / GRID_INTERVAL_Y;
+		int map_x = ray_x / (DISPLAY_WIDTH / maze->width);
+		int map_y = ray_y / (DISPLAY_HEIGHT / maze->height);
 
-		int prev_map_x = ray_x / GRID_INTERVAL_X;
-		int prev_map_y = ray_y / GRID_INTERVAL_Y;
+		int prev_map_x = ray_x / (DISPLAY_WIDTH / maze->width);
+		int prev_map_y = ray_y / (DISPLAY_HEIGHT / maze->height);
 		bool is_vertical_edge = false;
 		bool is_horizontal_edge = false;
 
 		int dof = 0;
 		while(dof < MAX_DEPTH) {
-			map_x = ray_x / GRID_INTERVAL_X;
-			map_y = ray_y / GRID_INTERVAL_Y;
+			map_x = ray_x / (DISPLAY_WIDTH / maze->width);
+			map_y = ray_y / (DISPLAY_HEIGHT / maze->height);
 
             // Detect cell transitions
             if (map_x != prev_map_x) {
@@ -465,7 +562,7 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 							   (ray_y - player->y) * (ray_y - player->y));
 
 		// Apply fisheye correction
-		float corrected_distance = 0.4f * distance * cosf(ray_angle - player->angle);
+		float corrected_distance = fisheye_correction * distance * cosf(ray_angle - player->angle);
 
 		// Calculate wall height (inversely proportional to distance)
 		int wall_height = (DISPLAY_HEIGHT / corrected_distance) * WALL_SCALE;
@@ -483,10 +580,10 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 		//uint8_t wall_g = 0xFF;
 		//uint8_t wall_b = 0xFF;
 
-		uint16_t maze_shit_color = getColor(maze, map_x, map_y);
-		uint8_t wall_r = (getRed(maze_shit_color) * 255) / 31;
-		uint8_t wall_g = (getGreen(maze_shit_color) * 255) / 31;
-		uint8_t wall_b = (getBlue(maze_shit_color)  * 255) / 31;
+		uint16_t maze_wall_color = getColor(maze, map_x, map_y);
+		uint8_t wall_r = (getRed(maze_wall_color) * 255) / 31;
+		uint8_t wall_g = (getGreen(maze_wall_color) * 255) / 31;
+		uint8_t wall_b = (getBlue(maze_wall_color)  * 255) / 31;
 
 		if (is_vertical_edge) {
 			// Vertical edges appear darker
@@ -519,7 +616,6 @@ ray_casting(u8 *framebuf, player_t *player, maze_t *maze) {
 			  i, wall_bottom);
 	}
 }
-
 
 point_t* generateHint(maze_t* maze, uint16_t playerX, uint16_t playerY, uint16_t endX, uint16_t endY, uint8_t quick){
 	maze->startX = playerX;

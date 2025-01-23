@@ -16,8 +16,6 @@ typedef struct quadPoint {
     uint32_t d;
 }quadPoint_t;
 
-#define isValid(maze,x,y)  (x < maze->width && y < maze->height && x >= 0 && y >= 0)
-
 uint16_t getX (uint32_t point) {
 	return point >> 16;
 }

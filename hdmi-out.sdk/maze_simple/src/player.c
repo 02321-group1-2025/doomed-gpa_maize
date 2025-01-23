@@ -34,7 +34,7 @@ enum Direction player_cardinal_direction(player_t *player) {
 }
 
 void
-player_move(player_t *player, char user_input, maze_t *maze, uint16_t end_x, uint16_t end_y) {
+player_move(player_t *player, char user_input, uint32_t button_value, maze_t *maze, uint16_t end_x, uint16_t end_y) {
 	int player_size = player->size;
 
 	// Save player pos and grid pos if they collide with shit
@@ -89,6 +89,41 @@ player_move(player_t *player, char user_input, maze_t *maze, uint16_t end_x, uin
 			break;
 		}
 	}
+
+	// Buttons
+	if (button_value & BUTTON_UP) {
+		int x_delta = 5 * cosf(player->angle);
+		int y_delta = 5 * sinf(player->angle);
+
+		player->x += x_delta;
+		player->y += y_delta;
+    }
+
+	if (button_value & BUTTON_LEFT) {
+		player->angle -= (M_PI/36);
+
+		if (player->angle < 0) {
+			player->angle += 2*M_PI;
+		}
+	}
+
+    if (button_value & BUTTON_DOWN) {
+    	float x_delta = 5 * cosf(player->angle);
+    	float y_delta = 5 * sinf(player->angle);
+
+		player->x -= x_delta;
+		player->y -= y_delta;
+    }
+
+    if (button_value & BUTTON_RIGHT) {
+    	player->angle += (M_PI/36);
+
+		if (player->angle > 2*M_PI) {
+			player->angle -= 2*M_PI;
+		}
+    }
+
+
 	player->grid_pos = player_grid_position(player, maze);
 
 
@@ -122,6 +157,9 @@ player_move(player_t *player, char user_input, maze_t *maze, uint16_t end_x, uin
 
 }
 
+extern const float FOV;
+
+
 void
 player_draw(player_t *player, uint8_t *framebuf) {
 	rect(
@@ -134,9 +172,10 @@ player_draw(player_t *player, uint8_t *framebuf) {
 	int x0 = player->x;
 	int y0 = player->y;
 
-	const float FOV = (90 * 2 * M_PI)/360;
-	const int NUM_RAYS = DISPLAY_WIDTH;  // One ray per vertical screen column
+	const int NUM_RAYS = DISPLAY_WIDTH * 2;
 	const float ANGLE_STEP = FOV / NUM_RAYS;  // Angle between rays
+
+
 
 	float start_angle = player->angle - FOV/2;
 
@@ -164,9 +203,11 @@ player_collision(player_t *player, maze_t *maze, uint16_t end_x, uint16_t end_y)
 
 	grid_t player_grid_pos = player_grid_position(player, maze);
 
+	// Don't collide with the end box
 	if(player_grid_pos.col == end_x && player_grid_pos.row == end_y){
 		return false;
 	}
+
 
 	if (!isPath(maze, player_grid_pos.col, player_grid_pos.row)) {
 		return true;

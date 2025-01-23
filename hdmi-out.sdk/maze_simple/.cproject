@@ -26,7 +26,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="xilinx.gnu.compiler.option.optimization.level.1168002706" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.option.debugging.level.1216932502" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.1495811084" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/include"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/include"/>
 								</option>
 								<option id="xilinx.gnu.compiler.misc.other.996263429" name="Other flags" superClass="xilinx.gnu.compiler.misc.other" value="-c -fmessage-length=0 -MT&quot;$@&quot; -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard" valueType="string"/>
 								<inputType id="xilinx.gnu.armv7.c.compiler.input.1930024004" name="C source files" superClass="xilinx.gnu.armv7.c.compiler.input"/>
@@ -35,13 +35,13 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="xilinx.gnu.compiler.option.optimization.level.252241995" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.option.debugging.level.1652739865" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.198860491" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/include"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/include"/>
 								</option>
 							</tool>
 							<tool id="xilinx.gnu.armv7.toolchain.archiver.1554950080" name="ARM v7 archiver" superClass="xilinx.gnu.armv7.toolchain.archiver"/>
 							<tool id="xilinx.gnu.armv7.c.toolchain.linker.debug.1311773693" name="ARM v7 gcc linker" superClass="xilinx.gnu.armv7.c.toolchain.linker.debug">
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1469909640" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/lib"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/lib"/>
 								</option>
 								<option id="xilinx.gnu.linker.inferred.swplatform.flags.1522062076" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
 									<listOptionValue builtIn="false" value="-Wl,--start-group,-lxil,-lgcc,-lc,--end-group"/>
@@ -59,7 +59,7 @@
 							</tool>
 							<tool id="xilinx.gnu.armv7.cxx.toolchain.linker.debug.1050160292" name="ARM v7 g++ linker" superClass="xilinx.gnu.armv7.cxx.toolchain.linker.debug">
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1706968691" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/lib"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/lib"/>
 								</option>
 								<option id="xilinx.gnu.linker.inferred.swplatform.flags.309479219" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
 									<listOptionValue builtIn="false" value="-Wl,--start-group,-lxil,-lgcc,-lc,--end-group"/>
@@ -98,7 +98,7 @@
 								<option defaultValue="gnu.c.optimization.level.more" id="xilinx.gnu.compiler.option.optimization.level.695276407" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.option.debugging.level.515449483" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.1183738885" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/include"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/include"/>
 								</option>
 								<option id="xilinx.gnu.compiler.misc.other.940069751" name="Other flags" superClass="xilinx.gnu.compiler.misc.other" value="-c -fmessage-length=0 -MT&quot;$@&quot; -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard" valueType="string"/>
 								<inputType id="xilinx.gnu.armv7.c.compiler.input.1176416313" name="C source files" superClass="xilinx.gnu.armv7.c.compiler.input"/>
@@ -107,13 +107,13 @@
 								<option defaultValue="gnu.c.optimization.level.more" id="xilinx.gnu.compiler.option.optimization.level.277981547" name="Optimization Level" superClass="xilinx.gnu.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.option.debugging.level.744122366" name="Debug Level" superClass="xilinx.gnu.compiler.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="xilinx.gnu.compiler.inferred.swplatform.includes.209493803" name="Software Platform Include Path" superClass="xilinx.gnu.compiler.inferred.swplatform.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/include"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/include"/>
 								</option>
 							</tool>
 							<tool id="xilinx.gnu.armv7.toolchain.archiver.2076768454" name="ARM v7 archiver" superClass="xilinx.gnu.armv7.toolchain.archiver"/>
 							<tool id="xilinx.gnu.armv7.c.toolchain.linker.release.632488189" name="ARM v7 gcc linker" superClass="xilinx.gnu.armv7.c.toolchain.linker.release">
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.2018290162" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/lib"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/lib"/>
 								</option>
 								<option id="xilinx.gnu.linker.inferred.swplatform.flags.93153059" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
 									<listOptionValue builtIn="false" value="-Wl,--start-group,-lxil,-lgcc,-lc,--end-group"/>
@@ -131,7 +131,7 @@
 							</tool>
 							<tool id="xilinx.gnu.armv7.cxx.toolchain.linker.release.1276105714" name="ARM v7 g++ linker" superClass="xilinx.gnu.armv7.cxx.toolchain.linker.release">
 								<option id="xilinx.gnu.linker.inferred.swplatform.lpath.1842878315" name="Software Platform Library Path" superClass="xilinx.gnu.linker.inferred.swplatform.lpath" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../maze_simple_bsp/ps7_cortexa9_0/lib"/>
+									<listOptionValue builtIn="false" value="../../bad_apple_bsp/ps7_cortexa9_0/lib"/>
 								</option>
 								<option id="xilinx.gnu.linker.inferred.swplatform.flags.1977415417" name="Software Platform Inferred Flags" superClass="xilinx.gnu.linker.inferred.swplatform.flags" valueType="libs">
 									<listOptionValue builtIn="false" value="-Wl,--start-group,-lxil,-lgcc,-lc,--end-group"/>
