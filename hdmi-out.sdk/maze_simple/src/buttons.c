@@ -1,0 +1,69 @@
+#include "xparameters.h"
+#include "xgpio.h"
+#include "xscugic.h"
+
+#include "buttons.h"
+
+#include "xil_printf.h"
+
+
+void
+button_interrupt_handler(void *callback_ref) {
+	button_state_t *button_state = (button_state_t *) callback_ref;
+
+	XGpio_InterruptDisable(&button_state->btn_gpio, XGPIO_IR_CH1_MASK);
+	if ((XGpio_InterruptGetStatus(&button_state->btn_gpio) & XGPIO_IR_CH1_MASK) != XGPIO_IR_CH1_MASK) {
+		XGpio_InterruptEnable(&button_state->btn_gpio, XGPIO_IR_CH1_MASK);
+		return;
+	}
+
+	u32 button_value = XGpio_DiscreteRead(&button_state->btn_gpio, 1);
+	button_state->btn_val = button_value;
+
+	xil_printf("%d\r\n", button_value);
+
+	XGpio_InterruptClear(&button_state->btn_gpio, XGPIO_IR_CH1_MASK);
+	XGpio_InterruptEnable(&button_state->btn_gpio, XGPIO_IR_CH1_MASK);
+}
+
+int
+initialize_buttons(button_state_t *button_state) {
+
+	int status = XGpio_Initialize(&button_state->btn_gpio, BTN_DEVICE_ID);
+	if (status != XST_SUCCESS) return XST_FAILURE;
+
+	XGpio_SetDataDirection(&button_state->btn_gpio, 1, 0xFF); // Inputs
+
+	return XST_SUCCESS;
+}
+
+int
+button_setup_interrupts(button_state_t *button_state) {
+	int status;
+
+	XScuGic_Config *intc_config = XScuGic_LookupConfig(INTC_DEVICE_ID);
+	status = XScuGic_CfgInitialize(&button_state->intc, intc_config, intc_config->CpuBaseAddress);
+	if (status != XST_SUCCESS) return XST_FAILURE;
+
+	// Enable interrupts
+	XGpio_InterruptEnable(&button_state->btn_gpio, CH1_INT_MASK);
+	XGpio_InterruptGlobalEnable(&button_state->btn_gpio);
+
+	Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
+	                             (Xil_ExceptionHandler) XScuGic_InterruptHandler,
+	                             &button_state->intc);
+	Xil_ExceptionEnable();
+
+	// Connect interrupt handlers
+	status = XScuGic_Connect(&button_state->intc, INTC_BTNS_INTERRUPT_ID,
+	                         (Xil_ExceptionHandler) button_interrupt_handler, button_state);
+	if (status != XST_SUCCESS) return XST_FAILURE;
+
+	XScuGic_Enable(&button_state->intc, INTC_BTNS_INTERRUPT_ID);
+
+	// Enable GPIO interrupts
+	XGpio_InterruptEnable(&button_state->btn_gpio, 1);
+	XGpio_InterruptGlobalEnable(&button_state->btn_gpio);
+
+	return XST_SUCCESS;
+}

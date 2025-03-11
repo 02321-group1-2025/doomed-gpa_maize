@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>maze_simple</name>
-	<comment>Created by SDK v2018.2. maze_simple_bsp - ps7_cortexa9_0</comment>
+	<comment></comment>
 	<projects>
-		<project>maze_simple_bsp</project>
+		<project>bad_apple_bsp</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
